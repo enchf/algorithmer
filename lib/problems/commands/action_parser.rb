@@ -5,8 +5,8 @@ require_relative 'actions/version_action'
 require_relative 'actions/empty_action'
 
 module Commands
+  # Action resolver.
   class ActionParser
-
     extend ActionHandler
 
     def self.resolve(action, args)

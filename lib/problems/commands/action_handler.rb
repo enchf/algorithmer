@@ -3,6 +3,7 @@
 require_relative 'actions/unknown_action'
 
 module Commands
+  # Mixin encapsulating the action handlers registry.
   module ActionHandler
     ACTIONS = Hash.new(UnknownAction.new)
 
