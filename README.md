@@ -6,32 +6,33 @@ It works as a CLI that provides commands to list, classify, run, add solutions a
 
 ## Installation
 
-Install it as a global gem: `gem install problems`. Test the installation running `problems -v`.
-This gem is intended to work as a CLI, but you can add it freely to a project.
+* Install it as a global gem: `gem install problems`.
+* Test the installation running `problems -v`. It will display gem version.
+* This gem is intended to work as a CLI, but you can add it freely to a project.
 
 
 ## Usage
 
 After installed, this gem is used as a command to create a problem repository and track and manage the problems inside it.
 
-#### Initialize
+### Initialize
 
 Create a problem repository with the command `problems init <name>`. This will create a folder with a project scaffold.
 Gem config files will be located in the `.problems` folder. 
 If you track your problems and solutions in a Git repository, it is encouraged to add this folder to it.
 
-#### General commands
+### General commands
 
 The gem works in general as a CRUD of problems and their properties. Then, sub-commands for the CRUD operations are available.
 In general, the structures for that will be the following:
 
-* For problems themselves: `problems [add|edit|remove|show] <problem-name>`.
+* For problems themselves: `problems [add|remove|show] <problem-name>`.
 * For problem listing: `problems list <filters>`.
 * For problem properties: `problems [add|edit|remove|list|show] <property> of <problem-name>`.
 
 Not all the sub-commands are going to be available for all the problem properties, those will be detailed in next sections.
 
-#### Problems
+### Problems
 
 Actions on problems are described in the table below:
 
@@ -45,7 +46,7 @@ Actions on problems are described in the table below:
 There are reserved words that refer to problem properties and cannot be used as a problem name, and are the following: 
 `tag, title, description, url, test, solution`.
 
-#### Problem Properties
+### Problem Properties
 
 Properties are edited using the following syntax: `problems <action> <property> of <problem-name>`.
 For example, to edit a problem description, the command is `problems edit description of problem-name`.
@@ -58,11 +59,11 @@ Available problem properties are edited with the following commands:
 | `edit title '<title>'`  | Override the formal title of the problem. It should be within double or single quotes.  |
 | `edit description`      | Override the description of the problem. It is edited in the console editor using nano.  |
 | `edit url <url>`        | Override the problem URL, which can refer to a link or to a coding challenges website.  |
-| `remove [title|description|url]`  | Removes the property, for example: `problems remove title of problem-name`.  |
+| `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title of problem-name`.  |
 
 Values are fully shown with the problems show command: `problems show <problem-name>`.
 
-#### Listing problems
+### Listing problems
 
 Problems can be listed or filtered using the following commands:
 
@@ -74,7 +75,7 @@ Problems can be listed or filtered using the following commands:
 
 Search criteria and tags are compatible to be used together.
 
-#### Manage test cases
+### Manage test cases
 
 Test cases can be added, edited, listed, viewed and removed for a problem.
 When a test case is added, it is assigned with a sequential number, so to edit or remove this number needs to be indicated.
@@ -91,7 +92,7 @@ Action list is as follows:
 | `edit <test-number>`    | Edits the test case indicated.  |
 | `remove <test-number>`  | Removes a test case.  |
 
-#### Solutions
+### Solutions
 
 Solutions work the same as tests cases: can be added, edited, listed, viewed and removed for a problem.
 Also, each one is assigned with a sequential number, so to edit or remove this number needs to be indicated.
