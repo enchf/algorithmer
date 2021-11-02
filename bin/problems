@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'problems'
+
+puts Problems::VERSION
