@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = "CLI that provides a way to add problems, solutions, test cases and its executions."
   spec.homepage      = "https://github.com/enchf/problems"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.5")
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
@@ -29,13 +29,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Development & Testing dependencies.
-  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rubocop", "~> 0.80"
 
   # Runtime dependencies.
   # spec.add_dependency "example-gem", "~> 1.0"
-  
+
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
 end
