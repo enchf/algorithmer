@@ -4,7 +4,7 @@ module Common
   # Mixin encapsulating a handlers registry.
   module RegistryHandler
     def register(handler)
-      actions[handler.key] = handler
+      actions[@key_provider.call(handler)] = handler
     end
 
     def default(handler)
@@ -13,6 +13,18 @@ module Common
 
     def actions
       @actions ||= {}
+    end
+
+    def key(&key_provider)
+      @key_provider ||= key_provider unless key_provider.nil?
+    end
+
+    def resolver(&block)
+      @resolver ||= block
+    end
+
+    def resolve(*args)
+      @resolver.call(*args)
     end
   end
 end

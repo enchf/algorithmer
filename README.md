@@ -88,15 +88,15 @@ Action list is as follows:
 |-------------------------|-------------|
 | `add`                   | Adds a test case.  |
 | `list`                  | List all test cases. The test number will appear in a column.  |
-| `show <test-number>`    | Display the input and expected output of the test case indicated.  |
-| `edit <test-number>`    | Edits the test case indicated.  |
-| `remove <test-number>`  | Removes a test case.  |
+| `show <test-number>`    | Display the input and expected output of the indicated test case.  |
+| `edit <test-number>`    | Edits the indicated test case.  |
+| `remove <test-number>`  | Removes a test case. Will ask for confirmation. |
 
 ### Solutions
 
 Solutions work the same as tests cases: can be added, edited, listed, viewed and removed for a problem.
 Also, each one is assigned with a sequential number, so to edit or remove this number needs to be indicated.
-When adding or editing a test case, an editor will be opened to edit the code.
+When editing a solution, an editor will be opened to edit the code.
 By default will lookup for these editors in order: Visual Studio Code and nano.
 
 The base command for this is `problems <action> solution of <problem-name> <extras>`.
@@ -104,11 +104,11 @@ Action list is as follows:
 
 | Actions                     | Description |
 |-----------------------------|-------------|
-| `add`                       | Adds a test case.  |
-| `list`                      | List all test cases. The test number will appear in a column.  |
-| `show <solution-number>`    | Display the input and expected output of the test case indicated.  |
-| `edit <solution-number>`    | Edits the test case indicated.  |
-| `remove <solution-number>`  | Removes a test case.  |
+| `add`                       | Adds a solution.  |
+| `list`                      | List all solutions. Solution number will appear in a column.  |
+| `show <solution-number>`    | Display the code of the indicated solution.  |
+| `edit <solution-number>`    | Edits the indicated solution in VS or nano.  |
+| `remove <solution-number>`  | Removes a solution. Will ask for confirmation.  |
 
 The add command needs an extra configuration to specify the programming language to be used.
 Currently, Kotlin, Ruby and Python are supported.

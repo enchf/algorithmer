@@ -4,6 +4,8 @@ require 'test_helper'
 require 'problems/common/registry_handler'
 
 class RegistryHandlerTest < Minitest::Test
+  CLASS_NAME_DEMODULIZED = proc { |clazz| clazz.name.split('::').last }
+
   class Foo
     def self.key() :foo end
   end
@@ -22,6 +24,7 @@ class RegistryHandlerTest < Minitest::Test
 
   class A
     extend Common::RegistryHandler
+    key(&:key)
     default Foo
     register Bar
     register Baz
@@ -29,7 +32,23 @@ class RegistryHandlerTest < Minitest::Test
 
   class B
     extend Common::RegistryHandler
+    key(&:key)
     register Boo
+  end
+
+  class C
+    extend Common::RegistryHandler
+    key(&CLASS_NAME_DEMODULIZED)
+    register Baz
+    register Boo
+    resolver { |name| actions[name].new }
+  end
+
+  class D
+    extend Common::RegistryHandler
+    key { |clazz| clazz.name.upcase }
+    resolver { |name| actions[name].new }
+    default Foo
   end
 
   def test_methods_available
@@ -38,13 +57,13 @@ class RegistryHandlerTest < Minitest::Test
   end
 
   def test_registry_added
-    assert_equal A.actions[:bar], Bar
-    assert_equal A.actions[:baz], Baz
+    assert_equal Bar, A.actions[:bar]
+    assert_equal Baz, A.actions[:baz]
   end
 
   def test_registry_default
-    assert_equal A.actions[:unknown], Foo
-    assert_equal A.actions[nil],      Foo
+    assert_equal Foo, A.actions[:unknown]
+    assert_equal Foo, A.actions[nil]
   end
 
   def test_no_default
@@ -53,6 +72,11 @@ class RegistryHandlerTest < Minitest::Test
 
   def test_independent_registries
     refute_equal A.actions[:boo], B.actions[:boo]
-    refute B.actions[:bar]
+    assert_nil   B.actions[:bar]
+  end
+
+  def test_resolve_function
+    assert_instance_of Baz, C.resolve('Baz')
+    assert_instance_of Foo, D.resolve('Any')
   end
 end
