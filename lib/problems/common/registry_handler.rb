@@ -12,7 +12,7 @@ module Common
     end
 
     def actions
-      @@actions ||= Hash.new
+      @actions ||= {}
     end
   end
 end
