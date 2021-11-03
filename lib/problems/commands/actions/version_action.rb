@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'action'
+
 module Commands
   # Action that shows gem version.
-  class VersionAction
-    def handle(_action, _args)
-      "problems version #{::Problems::VERSION}"
-    end
+  class VersionAction < Action
+    subcommand '-v'
 
-    def self.key
-      '-v'
+    def handle(*_)
+      "problems version #{::Problems::VERSION}"
     end
   end
 end
