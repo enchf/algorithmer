@@ -19,11 +19,12 @@ module Commands
   class ActionParser
     extend Common::RegistryHandler
 
-    key(&:key)
+    key(&:name)
     resolver { |action, args| actions[action].new.handle(action, args) }
 
     default UnknownAction
 
+    # configs
     register VersionAction
     register EmptyAction
   end

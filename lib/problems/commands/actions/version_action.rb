@@ -7,7 +7,7 @@ module Commands
       "problems version #{::Problems::VERSION}"
     end
 
-    def self.key
+    def self.name
       '-v'
     end
   end
