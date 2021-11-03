@@ -4,7 +4,7 @@ module Commands
   # Handler for the scenario of an empty action.
   # Currently displays the gem version.
   class EmptyAction < VersionAction
-    def self.command
+    def self.key
       nil
     end
   end
