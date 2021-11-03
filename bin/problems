@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'problems'
+require 'problems/commands/action_parser'
 
-puts Problems::VERSION
+action, *args = ARGV
+puts Commands::ActionParser.resolve(action, args)
