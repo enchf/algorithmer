@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'action'
+
 module Commands
-  class RunAction
+  # Run command configuration.
+  class RunAction < Action
+    subcommand 'run'
   end
 end

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'action'
+
 module Commands
-  class ListAction
+  # List command configuration.
+  class ListAction < Action
+    subcommand 'list'
   end
 end
