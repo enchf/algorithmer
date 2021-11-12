@@ -41,38 +41,38 @@ class RegistryHandlerTest < Minitest::Test
     key(&CLASS_NAME_DEMODULIZED)
     register Baz
     register Boo
-    resolver { |name| actions[name].new }
+    resolver { |name| registry[name].new }
   end
 
   class D
     extend Common::RegistryHandler
     key { |clazz| clazz.name.upcase }
-    resolver { |name| actions[name].new }
+    resolver { |name| registry[name].new }
     default Foo
   end
 
   def test_methods_available
-    assert_respond_to A, :actions
-    refute_respond_to A.new, :actions
+    assert_respond_to A, :registry
+    refute_respond_to A.new, :registry
   end
 
   def test_registry_added
-    assert_equal Bar, A.actions[:bar]
-    assert_equal Baz, A.actions[:baz]
+    assert_equal Bar, A.registry[:bar]
+    assert_equal Baz, A.registry[:baz]
   end
 
   def test_registry_default
-    assert_equal Foo, A.actions[:unknown]
-    assert_equal Foo, A.actions[nil]
+    assert_equal Foo, A.registry[:unknown]
+    assert_equal Foo, A.registry[nil]
   end
 
   def test_no_default
-    assert_nil B.actions[:unknown]
+    assert_nil B.registry[:unknown]
   end
 
   def test_independent_registries
-    refute_equal A.actions[:boo], B.actions[:boo]
-    assert_nil   B.actions[:bar]
+    refute_equal A.registry[:boo], B.registry[:boo]
+    assert_nil   B.registry[:bar]
   end
 
   def test_resolve_function
