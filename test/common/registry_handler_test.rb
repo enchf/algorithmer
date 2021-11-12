@@ -79,4 +79,8 @@ class RegistryHandlerTest < Minitest::Test
     assert_instance_of Baz, C.resolve('Baz')
     assert_instance_of Foo, D.resolve('Any')
   end
+
+  def test_list_of_all_registries
+    assert_equal [Bar, Baz], A.all_registries
+  end
 end

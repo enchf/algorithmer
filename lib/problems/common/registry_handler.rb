@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 module Common
   # Mixin encapsulating a handlers registry.
   module RegistryHandler
+    extend Forwardable
+
+    def_delegator :registry, :values, :all_registries
+
     def register(handler)
       registry[@key_provider.call(handler)] = handler
     end

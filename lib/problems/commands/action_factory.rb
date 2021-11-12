@@ -44,9 +44,9 @@ module Commands
     end
 
     def self.determine_handler(args)
-      registry.values
-              .find(registry.default) { |type| type.accept?(args) }
-              .new(args)
+      all_registries
+        .find(registry.default) { |type| type.accept?(args) }
+        .new(args)
     end
   end
 end
