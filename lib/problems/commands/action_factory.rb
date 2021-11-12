@@ -2,13 +2,34 @@
 
 require 'problems/common/registry_handler'
 
+require_relative 'entities/base'
+require_relative 'entities/invalid'
+
+require_relative 'entities/empty'
+
+<<-A
+require_relative 'entities/project'
+require_relative 'entities/problem'
+require_relative 'entities/tag'
+require_relative 'entities/title'
+require_relative 'entities/description'
+require_relative 'entities/url'
+require_relative 'entities/filter'
+require_relative 'entities/test'
+require_relative 'entities/solution'
+A
+
 module Commands
   # Action resolver.
   class ActionFactory
-    ACTIONS = %i[add edit remove show list init run version]
-
     extend Common::RegistryHandler
 
+    key(&:itself)
+
+    default Invalid
+
+    register Empty
+    <<-A
     register Project
     
     register Problem
@@ -16,24 +37,20 @@ module Commands
     register Title
     register Description
     register Url
-    register ProblemFilter
+    register Filter
     
     register Test
     register Solution
-
-    default InvalidObject
+    A
 
     resolver do |action, args|
-      return "Invalid action: #{action}" unless ACTIONS.include?(action)
-      
-      determine_handler(action, args).send(action)
+      Base::ACTIONS.include?(action) ? determine_handler(args).send(action) : "Invalid action: #{action}"
     end
-    
-    def self.determine_handler(args)
-      types = registry.select { |handler| handler.accept?(args) }
-      raise "More than one handler (#{types.map(&:name)} can be interpreted with this values: #{args}" if types.size > 1
 
-      types&.first || default
+    def self.determine_handler(args)
+      registry.values
+              .find(registry.default) { |type| type.accept?(args) }
+              .new(args)
     end
   end
 end
