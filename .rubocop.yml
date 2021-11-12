@@ -15,3 +15,7 @@ Layout/LineLength:
 Style/SingleLineMethods:
   Exclude:
     - 'test/**/*'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/problems/commands/entities/**/*'

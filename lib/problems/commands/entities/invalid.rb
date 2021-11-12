@@ -13,7 +13,6 @@ module Commands
     end
 
     def initialize(*args)
-      super(*args)
       @args = args
     end
   end
