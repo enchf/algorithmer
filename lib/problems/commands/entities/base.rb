@@ -8,7 +8,7 @@ module Commands
 
     ACTIONS.each do |action|
       define_method(action) do
-        "Action #{action} is not defined for object #{self.class.name}"
+        "Action #{action} is not defined for #{object_name}"
       end
     end
 
@@ -16,6 +16,10 @@ module Commands
 
     def self.accept?(*_)
       false
+    end
+
+    def object_name
+      self.class.name.downcase
     end
   end
 end

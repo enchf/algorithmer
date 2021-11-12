@@ -13,5 +13,9 @@ module Commands
     def self.accept?(*args)
       args.reject(&:nil?).reject(&:empty?).empty?
     end
+
+    def object_name
+      'empty arguments'
+    end
   end
 end
