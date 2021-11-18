@@ -4,27 +4,13 @@ require 'test_helper'
 require 'problems/common/registry_handler'
 
 class RegistryHandlerTest < Minitest::Test
-  CLASS_NAME_DEMODULIZED = proc { |clazz| clazz.name.split('::').last }
-
-  class Foo
-    def self.key() :foo end
-  end
-
-  class Bar
-    def self.key() :bar end
-  end
-
-  class Baz
-    def self.key() :baz end
-  end
-
-  class Boo
-    def self.key() :boo end
-  end
+  class Foo; end
+  class Bar; end
+  class Baz; end
+  class Boo; end
 
   class A
     extend Common::RegistryHandler
-    key(&:key)
     default Foo
     register Bar
     register Baz
@@ -32,55 +18,66 @@ class RegistryHandlerTest < Minitest::Test
 
   class B
     extend Common::RegistryHandler
-    key(&:key)
     register Boo
   end
 
   class C
     extend Common::RegistryHandler
-    key(&CLASS_NAME_DEMODULIZED)
     register Baz
     register Boo
-    resolver { |name| registry[name].new }
   end
 
   class D
     extend Common::RegistryHandler
-    key { |clazz| clazz.name.upcase }
-    resolver { |name| registry[name].new }
     default Foo
+    register Boo
+    register Baz
+  end
+
+  class E < A
+    register Boo
   end
 
   def test_methods_available
-    assert_respond_to A, :registry
-    refute_respond_to A.new, :registry
+    %i[registries include? default register find_by].each do |method|
+      assert_respond_to A, method, "Method: #{method} on class"
+      refute_respond_to A.new, method, "Method: #{method} on instance"
+    end
   end
 
   def test_registry_added
-    assert_equal Bar, A.registry[:bar]
-    assert_equal Baz, A.registry[:baz]
+    assert A.include?(Bar)
+    assert A.include?(Baz)
+    refute A.include?(Boo)
   end
 
   def test_registry_default
-    assert_equal Foo, A.registry[:unknown]
-    assert_equal Foo, A.registry[nil]
+    assert_equal Foo, A.default
   end
 
   def test_no_default
-    assert_nil B.registry[:unknown]
+    assert_nil B.default
   end
 
   def test_independent_registries
-    refute_equal A.registry[:boo], B.registry[:boo]
-    assert_nil   B.registry[:bar]
+    refute_equal A.registries, B.registries
   end
 
-  def test_resolve_function
-    assert_instance_of Baz, C.resolve('Baz')
-    assert_instance_of Foo, D.resolve('Any')
+  def test_find_by
+    assert_equal(Baz, C.find_by { |handler| handler.name.end_with?('Baz') })
+  end
+
+  def test_find_by_default
+    assert_equal(Foo, D.find_by { |handler| handler.name == 'Bar' })
   end
 
   def test_list_of_all_registries
-    assert_equal [Bar, Baz], A.all_registries
+    assert_equal [Bar, Baz], A.registries
+  end
+
+  def test_registries_available_in_subclass
+    assert_equal A.default, E.default
+    assert_equal [Bar, Baz, Boo], E.registries
+    assert_equal(Foo, E.find_by { |handler| handler.name == 'Taz' })
   end
 end

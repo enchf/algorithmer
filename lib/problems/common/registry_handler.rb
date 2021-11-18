@@ -7,31 +7,31 @@ module Common
   module RegistryHandler
     extend Forwardable
 
-    def_delegator :registry, :values, :all_registries
+    def_delegator :registries, :include?
 
-    def register(handler)
-      registry[@key_provider.call(handler)] = handler
+    def registries
+      @registries ||= []
     end
 
-    def default(handler)
-      registry.default = handler
+    def default(value = nil)
+      @default = value unless value.nil?
+      return @default if defined? @default
+
+      nil
     end
 
-    def registry
-      @registry ||= {}
+    def register(registry)
+      registries << registry unless include?(registry)
     end
 
-    def key(&key_provider)
-      @key_provider ||= key_provider unless key_provider.nil?
+    def find_by(&block)
+      registries.find(-> { default }, &block)
     end
 
-    # Determines which entry in registry correspond to the arguments.
-    def resolver(&block)
-      @resolver ||= block
-    end
-
-    def resolve(*args)
-      @resolver.call(*args)
+    def inherited(child)
+      super
+      child.registries.concat(registries)
+      child.default(default)
     end
   end
 end
