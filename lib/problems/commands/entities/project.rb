@@ -8,17 +8,16 @@ module Commands
     KEYWORD = 'project'
     NAME_VALID = /^[a-zA-Z0-9_-]+$/.freeze
 
+    validator { |*args| args.size == 2 }
+    validator { |keyword, *_| keyword == KEYWORD }
+    validator { |_, name, *_| NAME_VALID.match?(name) }
+
     def initialize(_, name)
       @name = name
     end
 
     def init
       "A folder called #{@name} will be created to store problems"
-    end
-
-    def self.accept?(*args)
-      keyword, name, *tail = args
-      tail.empty? && keyword == KEYWORD && NAME_VALID.match?(name)
     end
   end
 end
