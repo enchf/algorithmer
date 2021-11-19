@@ -17,7 +17,7 @@ After installed, this gem is used as a command to create a problem repository an
 
 ### Initialize
 
-Create a problem repository with the command `problems init <name>`. This will create a folder with a project scaffold.
+Create a problem repository with the command `problems init project <name>`. This will create a folder with a project scaffold.
 Gem config files will be located in the `.problems` folder. 
 If you track your problems and solutions in a Git repository, it is encouraged to add this folder to it.
 
@@ -28,7 +28,7 @@ In general, the structures for that will be the following:
 
 * For problems themselves: `problems [add|remove|show] <problem-name>`.
 * For problem listing: `problems list <filters>`.
-* For problem properties: `problems [add|edit|remove|list|show] <property> of <problem-name>`.
+* For problem properties: `problems [add|edit|remove|list|show] <property> for <problem-name>`.
 
 Not all the sub-commands are going to be available for all the problem properties, those will be detailed in next sections.
 
@@ -48,8 +48,8 @@ There are reserved words that refer to problem properties and cannot be used as 
 
 ### Problem Properties
 
-Properties are edited using the following syntax: `problems <action> <property> of <problem-name>`.
-For example, to edit a problem description, the command is `problems edit description of problem-name`.
+Properties are edited using the following syntax: `problems <action> <property> for <problem-name>`.
+For example, to edit a problem description, the command is `problems edit description for problem-name`.
 Available problem properties are edited with the following commands:
 
 | Command                 | Action |
@@ -59,7 +59,7 @@ Available problem properties are edited with the following commands:
 | `edit title '<title>'`  | Override the formal title of the problem. It should be within double or single quotes.  |
 | `edit description`      | Override the description of the problem. It is edited in the console editor using nano.  |
 | `edit url <url>`        | Override the problem URL, which can refer to a link or to a coding challenges website.  |
-| `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title of problem-name`.  |
+| `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title for problem-name`.  |
 
 Values are fully shown with the problems show command: `problems show <problem-name>`.
 
@@ -81,16 +81,16 @@ Test cases can be added, edited, listed, viewed and removed for a problem.
 When a test case is added, it is assigned with a sequential number, so to edit or remove this number needs to be indicated.
 When adding or editing a test case, an editor will be opened and the input and output values should be pasted or typed in the indicated sections.
 
-The base command for this is `problems <action> test of <problem-name>`.
+The base command for this is `problems <action> test for <problem-name>`.
 Action list is as follows:
 
 | Actions                 | Description |
 |-------------------------|-------------|
 | `add`                   | Adds a test case.  |
 | `list`                  | List all test cases. The test number will appear in a column.  |
-| `show <test-number>`    | Display the input and expected output of the indicated test case.  |
-| `edit <test-number>`    | Edits the indicated test case.  |
-| `remove <test-number>`  | Removes a test case. Will ask for confirmation. |
+| `show test <test-number>`    | Display the input and expected output of the indicated test case.  |
+| `edit test <test-number>`    | Edits the indicated test case.  |
+| `remove test <test-number>`  | Removes a test case. Will ask for confirmation. |
 
 ### Solutions
 
@@ -99,16 +99,16 @@ Also, each one is assigned with a sequential number, so to edit or remove this n
 When editing a solution, an editor will be opened to edit the code.
 By default will lookup for these editors in order: Visual Studio Code and nano.
 
-The base command for this is `problems <action> solution of <problem-name> <extras>`.
+The base command for this is `problems <action> solution for <problem-name> <extras>`.
 Action list is as follows:
 
 | Actions                     | Description |
 |-----------------------------|-------------|
 | `add`                       | Adds a solution.  |
 | `list`                      | List all solutions. Solution number will appear in a column.  |
-| `show <solution-number>`    | Display the code of the indicated solution.  |
-| `edit <solution-number>`    | Edits the indicated solution in VS or nano.  |
-| `remove <solution-number>`  | Removes a solution. Will ask for confirmation.  |
+| `show solution <solution-number>`    | Display the code of the indicated solution.  |
+| `edit solution <solution-number>`    | Edits the indicated solution in VS or nano.  |
+| `remove solution <solution-number>`  | Removes a solution. Will ask for confirmation.  |
 
 The add command needs an extra configuration to specify the programming language to be used.
 Currently, Kotlin, Ruby and Python are supported.
@@ -147,8 +147,8 @@ This is done with the special action `run`:
 
 * Run a problem against all solutions against all test cases: `problems run <problem-name>`.
 * Run a problem against all solutions against a test case: `problems run <problem-name> with <test-number>`.
-* Run a problem against a solution against all test cases `problems run solution <solution-number> of <problem-name>`.
-* Run a problem against a solution against a test case `problems run solution <solution-number> of <problem-name> with <test-number>`.
+* Run a problem against a solution against all test cases `problems run solution <solution-number> for <problem-name>`.
+* Run a problem against a solution against a test case `problems run solution <solution-number> for <problem-name> with <test-number>`.
 
 
 ## Development

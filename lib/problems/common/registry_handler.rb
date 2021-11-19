@@ -1,30 +1,40 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 module Common
   # Mixin encapsulating a handlers registry.
   module RegistryHandler
-    def register(handler)
-      actions[@key_provider.call(handler)] = handler
+    extend Forwardable
+
+    def_delegator :registries, :include?
+
+    def registries
+      @registries ||= []
     end
 
-    def default(handler)
-      actions.default = handler
+    def default(value = nil)
+      @default = value unless value.nil?
+      return @default if defined? @default
+
+      nil
     end
 
-    def actions
-      @actions ||= {}
+    def register(registry = nil, &block)
+      element = nil
+      element = registry unless registry.nil?
+      element = block if block_given?
+      registries << element unless element.nil? || include?(element)
     end
 
-    def key(&key_provider)
-      @key_provider ||= key_provider unless key_provider.nil?
+    def find_by(&block)
+      registries.find(-> { default }, &block)
     end
 
-    def resolver(&block)
-      @resolver ||= block
-    end
-
-    def resolve(*args)
-      @resolver.call(*args)
+    def inherited(child)
+      super
+      child.registries.concat(registries)
+      child.default(default)
     end
   end
 end

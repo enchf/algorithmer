@@ -15,3 +15,10 @@ Layout/LineLength:
 Style/SingleLineMethods:
   Exclude:
     - 'test/**/*'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/problems/commands/entities/**/*'
+
+Metrics/AbcSize:
+  Max: 20

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'problems/commands/action_parser'
+require 'problems/commands/action_factory'
 
 action, *args = ARGV
-puts Commands::ActionParser.resolve(action, args)
+puts Commands::ActionFactory.resolve(action&.to_sym, args)

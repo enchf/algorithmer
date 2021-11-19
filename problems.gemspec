@@ -5,7 +5,7 @@ require_relative "lib/problems/version"
 Gem::Specification.new do |spec|
   spec.name          = "problems"
   spec.version       = Problems::VERSION
-  spec.authors       = ["Nacho"]
+  spec.authors       = ["enchf"]
 
   spec.summary       = "CLI to manage and run programming challanges and their test cases."
   spec.description   = "CLI that provides a way to add problems, solutions, test cases and its executions."
@@ -29,7 +29,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Development & Testing dependencies.
+  spec.add_development_dependency 'byebug', '~> 9.0'
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency 'minitest-reporters', '~> 1.4'
+  spec.add_development_dependency 'mocha', '~> 1.13'
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rubocop", "~> 0.80"
 
