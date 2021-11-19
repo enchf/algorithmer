@@ -2,9 +2,14 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
-require "byebug"
 require "problems"
-require "minitest/reporters"
+
+require "byebug"
+
 require "minitest/autorun"
+require 'minitest/unit'
+require "minitest/reporters"
+
+require 'mocha/minitest'
 
 Minitest::Reporters.use!
