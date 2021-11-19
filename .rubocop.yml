@@ -19,3 +19,6 @@ Style/SingleLineMethods:
 Lint/MissingSuper:
   Exclude:
     - 'lib/problems/commands/entities/**/*'
+
+Metrics/AbcSize:
+  Max: 20

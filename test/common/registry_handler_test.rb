@@ -38,6 +38,12 @@ class RegistryHandlerTest < Minitest::Test
     register Boo
   end
 
+  class F
+    extend Common::RegistryHandler
+    register { |*args| args.nil? }
+    register { |*args| args.empty? }
+  end
+
   def test_methods_available
     %i[registries include? default register find_by].each do |method|
       assert_respond_to A, method, "Method: #{method} on class"
@@ -79,5 +85,13 @@ class RegistryHandlerTest < Minitest::Test
     assert_equal A.default, E.default
     assert_equal [Bar, Baz, Boo], E.registries
     assert_equal(Foo, E.find_by { |handler| handler.name == 'Taz' })
+  end
+
+  def test_register_accepts_blocks
+    F.registries.all? do |block|
+      assert_respond_to block, :call
+    end
+    refute F.registries.first.call
+    assert F.registries.last.call
   end
 end

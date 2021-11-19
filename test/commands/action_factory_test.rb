@@ -5,8 +5,8 @@ require 'problems/commands/action_factory'
 
 class ActionFactoryTest < Minitest::Test
   VALID_MESSAGE = 'Valid'
-  INVALID_MESSAGE = 'Invalid'
   SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample
+  ARGS = %w[arg1 arg2].freeze
 
   def test_respond_to_methods
     assert_respond_to tested_object, :resolve
@@ -15,7 +15,7 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_invalid_action
-    assert_equal 'Invalid action: invalid', tested_object.resolve(:invalid, %w[arg1 arg2])
+    assert_equal 'Invalid action: invalid', tested_object.resolve(:invalid, ARGS)
   end
 
   def test_added_handlers
@@ -32,15 +32,18 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_action_accepted
-    handler_index = rand(tested_object.registries.size)
+    mocked_handler = mock
+    mocked_handler.stubs(SAMPLE_ACTION).returns(VALID_MESSAGE)
+    selected_handler = tested_object.registries.sample
+    selected_handler.stubs(:new).returns(mocked_handler)
 
-    tested_object.registries.each_with_index do |handler, i|
-      accepted = handler_index == i
+    tested_object.registries.each do |handler|
+      accepted = selected_handler == handler
       handler.stubs(:accept?).returns(accepted)
-      handler.any_instance.stubs(SAMPLE_ACTION).returns(accepted ? VALID_MESSAGE : INVALID_MESSAGE)
+      handler.any_instance.expects(SAMPLE_ACTION).never unless accepted
     end
 
-    assert_equal VALID_MESSAGE, tested_object.resolve(SAMPLE_ACTION, %w[arg1 arg2])
+    assert_equal VALID_MESSAGE, tested_object.resolve(SAMPLE_ACTION, ARGS)
   end
 
   private

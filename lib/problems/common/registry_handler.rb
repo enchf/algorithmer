@@ -20,8 +20,11 @@ module Common
       nil
     end
 
-    def register(registry)
-      registries << registry unless include?(registry)
+    def register(registry = nil, &block)
+      element = nil
+      element = registry unless registry.nil?
+      element = block if block_given?
+      registries << element unless element.nil? || include?(element)
     end
 
     def find_by(&block)
