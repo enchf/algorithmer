@@ -4,4 +4,4 @@
 require 'problems/commands/action_factory'
 
 action, *args = ARGV
-puts Commands::ActionFactory.resolve(action, args)
+puts Commands::ActionFactory.resolve(action&.to_sym, args)
