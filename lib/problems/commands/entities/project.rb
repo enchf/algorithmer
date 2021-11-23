@@ -8,9 +8,9 @@ module Commands
     KEYWORD = 'project'
     NAME_VALID = /^[a-zA-Z0-9_-]+$/.freeze
 
-    validator { |*args| args.size == 2 }
-    validator { |keyword, *_| keyword == KEYWORD }
-    validator { |_, name, *_| NAME_VALID.match?(name) }
+    validator args_size(2)
+    validator keyword(KEYWORD, 0)
+    validator valid_argument(NAME_VALID, 1)
 
     def initialize(_, name)
       @name = name

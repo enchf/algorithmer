@@ -33,5 +33,21 @@ module Commands
     def object_name
       self.class.name.split('::').last.downcase
     end
+
+    def self.args_size(size)
+      proc { |*args| args.size == size }
+    end
+
+    def self.keyword(keyword, index)
+      proc { |*args| args[index] == keyword }
+    end
+
+    def self.valid_argument(regex, index)
+      proc { |*args| valid_value(regex).call(args[index]) }
+    end
+
+    def self.valid_value(regex)
+      proc { |value| regex.match?(value) }
+    end
   end
 end
