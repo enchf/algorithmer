@@ -7,6 +7,7 @@ require_relative 'entities/invalid'
 
 require_relative 'entities/empty'
 require_relative 'entities/project'
+
 require_relative 'entities/problem'
 require_relative 'entities/tag'
 require_relative 'entities/title'
@@ -14,8 +15,11 @@ require_relative 'entities/description'
 require_relative 'entities/url'
 require_relative 'entities/property_remover'
 require_relative 'entities/filter'
+
 require_relative 'entities/test'
+require_relative 'entities/numbered_test'
 require_relative 'entities/solution'
+require_relative 'entities/numbered_solution'
 
 module Commands
   # Action resolver.
@@ -36,7 +40,9 @@ module Commands
     register Filter
 
     register Test
+    register NumberedTest
     register Solution
+    register NumberedSolution
 
     def self.resolve(action, args)
       Base::ACTIONS.include?(action) ? determine_handler(args).send(action) : "Invalid action: #{action}"

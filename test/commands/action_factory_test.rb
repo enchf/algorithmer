@@ -7,6 +7,7 @@ class ActionFactoryTest < Minitest::Test
   VALID_MESSAGE = 'Valid'
   SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample
   ARGS = %w[arg1 arg2].freeze
+  NUMBER_OF_HANDLERS = 13
 
   def test_respond_to_methods
     assert_respond_to tested_object, :resolve
@@ -19,7 +20,7 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_added_handlers
-    assert_equal 11, tested_object.registries.size
+    assert_equal NUMBER_OF_HANDLERS, tested_object.registries.size
   end
 
   def test_valid_action
