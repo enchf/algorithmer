@@ -38,11 +38,11 @@ module Commands
       proc { |*args| args.size == size }
     end
 
-    def self.keyword(keyword, index)
+    def self.keyword(keyword, index = 0)
       proc { |*args| args[index] == keyword }
     end
 
-    def self.valid_argument(regex, index)
+    def self.valid_argument(regex, index = 1)
       proc { |*args| valid_value(regex).call(args[index]) }
     end
 

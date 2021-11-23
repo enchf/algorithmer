@@ -10,9 +10,9 @@ module Commands
     URL_VALID = URI::DEFAULT_PARSER.make_regexp(%w[http https])
 
     validator args_size(4)
-    validator keyword(URL_KEYWORD, 0)
-    validator valid_argument(URL_VALID, 1)
-    validator for_validator(2)
+    validator keyword(URL_KEYWORD)
+    validator valid_argument(URL_VALID)
+    validator for_keyword
 
     def initialize(_, url, _, problem)
       @url = url

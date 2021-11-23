@@ -9,9 +9,9 @@ module Commands
     TAG_VALID = /^[a-z]+$/.freeze
 
     validator args_size(4)
-    validator keyword(TAG_KEYWORD, 0)
-    validator valid_argument(TAG_VALID, 1)
-    validator for_validator(2)
+    validator keyword(TAG_KEYWORD)
+    validator valid_argument(TAG_VALID)
+    validator for_keyword
 
     def initialize(_, tag, _, problem)
       @tag = tag

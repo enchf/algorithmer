@@ -10,7 +10,7 @@ module Commands
     # TODO: Validates if a problem exists in the project
     validator { |*_| true }
 
-    def self.for_validator(position)
+    def self.for_keyword(position = 2)
       proc { |*args| args[position] == FOR_KEYWORD }
     end
   end

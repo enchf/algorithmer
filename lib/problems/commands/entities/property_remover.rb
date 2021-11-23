@@ -9,7 +9,7 @@ module Commands
 
     validator args_size(3)
     validator { |keyword, *_| PROPERTIES.include?(keyword) }
-    validator for_validator(1)
+    validator for_keyword(1)
 
     def initialize(property, _, problem)
       @property = property

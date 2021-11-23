@@ -9,8 +9,8 @@ module Commands
     NAME_VALID = /^[a-zA-Z0-9_-]+$/.freeze
 
     validator args_size(2)
-    validator keyword(KEYWORD, 0)
-    validator valid_argument(NAME_VALID, 1)
+    validator keyword(KEYWORD)
+    validator valid_argument(NAME_VALID)
 
     def initialize(_, name)
       @name = name

@@ -8,8 +8,8 @@ module Commands
     DESCRIPTION_KEYWORD = 'description'
 
     validator args_size(3)
-    validator keyword(DESCRIPTION_KEYWORD, 0)
-    validator for_validator(2)
+    validator keyword(DESCRIPTION_KEYWORD)
+    validator for_keyword
 
     def initialize(_, _, problem)
       @problem = problem

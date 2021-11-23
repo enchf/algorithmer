@@ -9,9 +9,9 @@ module Commands
     TITLE_VALID = /^'[a-zA-Z0-9 _-]+'$/.freeze
 
     validator args_size(4)
-    validator keyword(TITLE_KEYWORD, 0)
-    validator valid_argument(TITLE_VALID, 1)
-    validator for_validator(2)
+    validator keyword(TITLE_KEYWORD)
+    validator valid_argument(TITLE_VALID)
+    validator for_keyword
 
     def initialize(_, title, _, problem)
       @title = title
