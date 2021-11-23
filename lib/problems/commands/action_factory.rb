@@ -12,6 +12,7 @@ require_relative 'entities/tag'
 require_relative 'entities/title'
 require_relative 'entities/description'
 require_relative 'entities/url'
+require_relative 'entities/property_remover'
 require_relative 'entities/filter'
 require_relative 'entities/test'
 require_relative 'entities/solution'
@@ -31,6 +32,7 @@ module Commands
     register Title
     register Description
     register Url
+    register PropertyRemover
     register Filter
 
     register Test

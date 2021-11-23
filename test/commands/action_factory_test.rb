@@ -19,7 +19,7 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_added_handlers
-    assert_equal 10, tested_object.registries.size
+    assert_equal 11, tested_object.registries.size
   end
 
   def test_valid_action
