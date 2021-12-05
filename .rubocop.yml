@@ -22,3 +22,7 @@ Lint/MissingSuper:
 
 Metrics/AbcSize:
   Max: 20
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'lib/problems/commands/entities/numbered_solution_for_test.rb'
