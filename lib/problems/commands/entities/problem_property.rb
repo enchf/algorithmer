@@ -1,22 +1,17 @@
 # frozen_string_literal: true
 
-require_relative 'base'
+require_relative 'project_property'
 
 module Commands
   # Base entity class for objects related to a problem.
-  class ProblemProperty < Base
+  class ProblemProperty < ProjectProperty
+    FOR_KEYWORD = 'for'
+
     # TODO: Validates if a problem exists in the project
-    def problem_exists?(_)
-      true
-    end
+    validator { |*_| true }
 
-    # TODO: Validates if the execution is within a project folder
-    def within_project_folder?
-      true
-    end
-
-    def self.accept?(*_)
-      within_project_folder? && problem_exists?
+    def self.for_keyword(position = 2)
+      proc { |*args| args[position] == FOR_KEYWORD }
     end
   end
 end
