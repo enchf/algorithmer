@@ -27,5 +27,9 @@ module Commands
     def remove
       "Remove solution ##{@index} from problem #{@problem}"
     end
+
+    def run
+      "Run solution ##{@index} for problem #{@problem} against all test cases"
+    end
   end
 end

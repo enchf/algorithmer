@@ -25,5 +25,9 @@ module Commands
     def remove
       "After asking for confirmation, problem #{@name} will be deleted"
     end
+
+    def run
+      "Run all solutions for problem #{@name} against all test cases"
+    end
   end
 end
