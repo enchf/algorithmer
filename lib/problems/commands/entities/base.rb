@@ -49,5 +49,9 @@ module Commands
     def self.valid_value(regex)
       proc { |value| regex.match?(value) }
     end
+
+    def self.number(index = 1)
+      proc { |*args| /^[0-9]+$/.match?(args[index]) }
+    end
   end
 end
