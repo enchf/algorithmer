@@ -30,11 +30,13 @@ Gem::Specification.new do |spec|
 
   # Development & Testing dependencies.
   spec.add_development_dependency 'byebug', '~> 9.0'
+  spec.add_development_dependency 'colored', '~> 1.2'
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency 'minitest-reporters', '~> 1.4'
   spec.add_development_dependency 'mocha', '~> 1.13'
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rubocop", "~> 0.80"
+  spec.add_development_dependency 'terminal-table', '~> 3.0'
 
   # Runtime dependencies.
   # spec.add_dependency "example-gem", "~> 1.0"
