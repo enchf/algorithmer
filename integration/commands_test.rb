@@ -7,16 +7,19 @@ require 'colored'
 require 'terminal-table'
 
 require_relative 'suite'
+require_relative 'utils'
 
 class CommandsTest
   SUITES_PATH = 'integration/suites'
+
+  include Utils
 
   def initialize
     @suites = suites.map(&method(:load_suite))
   end
 
   def run
-    print_banner
+    print_banner('CLI Testing')
     run_suites
     show_info
     exit_status
@@ -36,11 +39,6 @@ class CommandsTest
     File.join(Dir.getwd, SUITES_PATH)
   end
 
-  def print_banner
-    puts "\n" + Artii::Base.new(font:'roman').asciify('CLI Testing')
-    puts "\n"
-  end
-
   def run_suites
     @suites.each do |suite|
       suite.run!
@@ -57,7 +55,8 @@ class CommandsTest
 
     info = labels.zip(values, colors)
                  .map { |label, value, color| "#{label}: #{value.to_s.bold.send(color)}" }
-    puts Terminal::Table.new(rows: [info])
+
+    puts build_table([info])
   end
 
   def exit_status
