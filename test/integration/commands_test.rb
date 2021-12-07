@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'test_helper'
 require 'problems/commands/entities/base'
 
-class CommandsTest < Minitest::Test
+require_relative 'suite'
+
+class CommandsTest
   SUITES_PATH = 'test/integration/suites'
 
-  def setup
+  def initialize
     @suites = suites.map(&method(:load_suite))
   end
 
-  def test_suites
-    @suites.each(&method(:test_suite))
-    assert true
+  def run
+    @suites.each(&:test)
   end
 
   private
@@ -23,7 +23,7 @@ class CommandsTest < Minitest::Test
   end
 
   def load_suite(suite)
-    YAML.load_file(suite)
+    Suite.new(YAML.load_file(suite))
   end
 
   def suites_path
@@ -33,6 +33,6 @@ class CommandsTest < Minitest::Test
   def to_camelcase(str)
     str.chars.slice_before { |ch| /[A-Z]/.match?(ch) }.map(&:join).map(&:downcase).join('_')
   end
-
-  def test_suite(suite); end
 end
+
+CommandsTest.new.run

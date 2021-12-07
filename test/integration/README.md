@@ -12,7 +12,6 @@ Each file have the following structure:
 
 ```yaml
 name: 'The name of the suite'
-order: 1   # The order in which the file should be executed. Sorted by name on a draw. Optional. If not present executed last.
 tests:     # An array for each of the tests.
   - class: EntityClassName
     actions:
@@ -22,8 +21,10 @@ tests:     # An array for each of the tests.
           property: ''  # A test-defined properties, listed below.
           match: ''     # A regex string to match against.
           value: ''     # An exact value to expect.
+    setup:              # Array of commands to be executed before the test
+    teardown:           # Array of commands to be executed after the test
     exclude: ['actions', 'to', 'exclude', 'from', 'this', 'test']   # Can be used 'ALL' to exclude the rest of actions.
-    # All the remaining actions will be treated as unimplemented.
+                                                                    # All the remaining actions will be treated as unimplemented.
 ```
 
 ## Test defined properties
