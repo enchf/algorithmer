@@ -15,7 +15,7 @@ RuboCop::RakeTask.new
 
 Rake::TestTask.new(:integration) do |t|
   t.libs << "lib"
-  t.test_files = ['test/integration/commands_test.rb']
+  t.test_files = ['integration/commands_test.rb']
 end
 
 task default: %i[test rubocop integration]

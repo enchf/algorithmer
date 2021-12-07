@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
+require 'byebug'
 require 'yaml'
+require 'artii'
 require 'colored'
 require 'terminal-table'
 
 require_relative 'suite'
 
 class CommandsTest
-  SUITES_PATH = 'test/integration/suites'
+  SUITES_PATH = 'integration/suites'
 
   def initialize
     @suites = suites.map(&method(:load_suite))
   end
 
   def run
-    @suites.each(&:test)
+    print_banner
+    run_suites
+    show_info
+    exit_status
   end
 
   private
@@ -24,15 +29,39 @@ class CommandsTest
   end
 
   def load_suite(suite)
-    Suite.new(YAML.load_file(suite))
+    Suite.new(suite, YAML.load_file(suite))
   end
 
   def suites_path
     File.join(Dir.getwd, SUITES_PATH)
   end
 
-  def to_camelcase(str)
-    str.chars.slice_before { |ch| /[A-Z]/.match?(ch) }.map(&:join).map(&:downcase).join('_')
+  def print_banner
+    puts "\n" + Artii::Base.new(font:'roman').asciify('CLI Testing')
+    puts "\n"
+  end
+
+  def run_suites
+    @suites.each do |suite|
+      suite.run!
+      suite.print
+    end
+  end
+
+  def show_info
+    @successful = @suites.count(&:success?)
+
+    labels = ["Suites found", "Successful executions", "Failures"]
+    values = [@suites.size, @successful, @suites.size - @successful]
+    colors = %i[white green red]
+
+    info = labels.zip(values, colors)
+                 .map { |label, value, color| "#{label}: #{value.to_s.bold.send(color)}" }
+    puts Terminal::Table.new(rows: [info])
+  end
+
+  def exit_status
+    fail "Integration testing failed. See above for failure details" unless @suites.size == @successful
   end
 end
 

@@ -3,14 +3,25 @@
 require_relative 'command_test'
 
 class Suite
-  def initialize(config)
+  def initialize(filename, config)
+    @filepath = filename
+    @filename = File.basename(@filepath)
+    @name = config['name'] || @filename
+    @tests = config.fetch('tests', []).map { |test_config| CommandTest.new(test_config) }
     
-    @name = config['name']
-    @tests = config['tests'].map { |test_config| CommandTest.new(test_config) }
+    @executed = false
+    @success = nil
   end
 
-  def test
-    puts "*** Running suite: #{@name.bold} ***"
-    @tests.each(&:run_and_print)
+  def run!
+    @success = true
+  end
+
+  def print
+    puts @name
+  end
+
+  def success?
+    @success
   end
 end

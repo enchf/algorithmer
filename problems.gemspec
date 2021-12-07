@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Development & Testing dependencies.
+  spec.add_development_dependency 'artii', '~> 2.1', '>= 2.1.2'
   spec.add_development_dependency 'byebug', '~> 9.0'
   spec.add_development_dependency 'colored', '~> 1.2'
   spec.add_development_dependency "minitest", "~> 5.0"
