@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'problems/commands/entities/base'
+require 'colored'
+require 'terminal-table'
 
 require_relative 'suite'
 
