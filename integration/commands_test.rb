@@ -56,7 +56,8 @@ class CommandsTest
     info = labels.zip(values, colors)
                  .map { |label, value, color| "#{label}: #{value.to_s.bold.send(color)}" }
 
-    puts build_table([info])
+    puts "\n"
+    puts build_table([info], title: 'Summary')
   end
 
   def exit_status

@@ -1,7 +1,7 @@
-name: 'General commands'
+name: 'General Commands'
 tests:
   - class: Empty
     actions:
-      - name: version
-        expects:
-          property: VERSION
+      - name: 'Check version'
+        action: version
+        expects: VERSION

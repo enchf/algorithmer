@@ -17,7 +17,9 @@ module Utils
   end
 
   def build_table(rows, title: nil, headers: nil, style: TABLE_STYLE)
-    Terminal::Table.new(rows: rows, title: title, headings: headers, style: style).to_s
+    config = { rows: rows, title: title, style: style }
+    config[:headings] = headers unless headers.nil?
+    Terminal::Table.new(config).to_s
   end
 
   def print_banner(text, font = 'roman')

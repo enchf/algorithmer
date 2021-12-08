@@ -37,7 +37,7 @@ class Suite
   end
 
   def header
-    single_cell_matrix(@name) + "\n\n"
+    single_cell_matrix(@name).bold + "\n\n"
   end
 
   def pending_execution

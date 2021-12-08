@@ -14,9 +14,13 @@ class Expectations
 
   extend Common::RegistryHandler
 
+  def self.define_handler_method(handler)
+    define_singleton_method(handler.name.downcase.to_sym) { handler.new }
+  end
+
   def self.add(handler)
     register(handler)
-    define_method(handler)
+    define_handler_method(handler)
   end
 
   default Invalid
@@ -26,13 +30,7 @@ class Expectations
   add Match
   add Value
 
-  def self.determine_from(config)
+  def self.determine_by(config)
     find_by { |handler| handler.accept?(config) }.new(config)
-  end
-
-  private
-  
-  def self.define_method(handler)
-    define_singleton_method(handler.name.downcase.to_sym) { handler.new }
   end
 end

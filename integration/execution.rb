@@ -14,7 +14,7 @@ class Execution
   def initialize(name, action, args, expected)
     @name = name
     @action = action
-    @args = args
+    @args = args.split(' ')
     @validator = expected
   end
 
