@@ -58,7 +58,7 @@ class Execution
 
   def execute
     validate_action
-    @execution_result = `#{command}`
+    @execution_result = `#{command}`.strip
     self.success = validator.match?(@execution_result)
   rescue StandardError => e
     @execution_result = e.message
