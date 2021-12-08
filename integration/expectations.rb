@@ -5,6 +5,7 @@ require 'problems/common/registry_handler'
 require_relative 'expectations/invalid'
 require_relative 'expectations/version'
 require_relative 'expectations/unimplemented'
+require_relative 'expectations/invalid_args'
 require_relative 'expectations/match'
 require_relative 'expectations/value'
 
@@ -29,6 +30,7 @@ class Expectations
 
   add Version
   add Unimplemented
+  add InvalidArgs
   add Match
   add Value
 

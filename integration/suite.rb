@@ -32,14 +32,14 @@ class Suite
   private
 
   def build_test(config)
-    actions = config.fetch('action', [])
-    actions = [actions] unless actions.is_a?(Array)
-
+    actions = fetch_as_array(config, 'action')
+    args = fetch_as_array(config, 'args')
     name = config.fetch('name', actions.join(', '))
-    args = config.fetch('args', '')
     expected = Expectations.determine_by(config['expects'])
 
-    actions.map { |action| Execution.new(name, action, args, expected) }
+    combinations = actions.product(args).map do |action, args_str|
+      Execution.new(name, action, args_str, expected)
+    end
   end
 
   def header
@@ -53,5 +53,10 @@ class Suite
   def print_tests
     results = @executions.map(&:result)
     puts build_table(results, headers: Execution::HEADERS)
+  end
+
+  def fetch_as_array(config, property)
+    value = config.fetch(property, [])
+    value.is_a?(Array) ? value : [value]
   end
 end

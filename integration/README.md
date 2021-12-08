@@ -17,6 +17,7 @@ tests:     # An array for each of the tests.
     action: action  # One of the valid actions defined in Base class. Can be many tests for each action.
                     # Also, an array of actions can be passed as a batch test.
     args: ''        # Arguments string. If not present, no args are passed.
+                    # Also it accepts an array, which will generate a execution per element.
     expects:        # The expected result from execution.
                     # The value can be a predefined expectation. See the ones listed below.
                     # Also can be a direct value: a number, a string or a regular expresion in the form /<expression>/.

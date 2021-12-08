@@ -1,1 +1,11 @@
 name: 'Problems creation and editing'
+tests:
+  - name: 'Test valid problem names'
+    action: 'add'
+    args: ['startsWithLower', 'StartWithUppercase', 'Contain1Numbers2', 'Special-Chars_', '1StartWithNumber']
+    expects:
+      match: 'A problem with id (.+) will be added to the project'
+  - name: 'Test invalid problem names'
+    action: 'add'
+    args: ['-startWithChar', 'Invalid@Chars', 'Have Spaces']
+    expects: INVALID_ARGS
