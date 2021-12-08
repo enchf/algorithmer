@@ -9,6 +9,7 @@ require 'terminal-table'
 require_relative 'suite'
 require_relative 'utils'
 
+# Main class for commands integration testing
 class CommandsTest
   SUITES_PATH = 'integration/suites'
 
@@ -61,7 +62,7 @@ class CommandsTest
   end
 
   def exit_status
-    fail "Integration testing failed. See above for failure details" unless @suites.size == @successful
+    raise "Integration testing failed. See above for failure details" unless @suites.size == @successful
   end
 end
 

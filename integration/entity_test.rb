@@ -5,9 +5,11 @@ require_relative 'execution'
 require_relative 'expectations'
 require_relative 'utils'
 
+# Test against a command entity.
+# Can include multiple execution of actions against the same entity.
 class EntityTest
   ENTITIES_PATH = 'problems/commands/entities/'
-  
+
   include Executable
   include Utils
 
@@ -41,7 +43,7 @@ class EntityTest
     configs.flat_map do |config|
       actions = config.fetch('action', [])
       actions = [actions] unless actions.is_a?(Array)
-      
+
       name = config.fetch('name', actions.join(', '))
       args = config.fetch('args', '')
       expected = Expectations.determine_by(config['expects'])

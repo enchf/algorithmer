@@ -2,6 +2,7 @@
 
 require_relative 'base'
 
+# Expectation that expects a fixed value.
 class Value < Base
   def self.accept?(config)
     config.is_a?(String) || config.is_a?(Numeric) || (hash?(config) && key?(config, 'value'))
@@ -10,6 +11,7 @@ class Value < Base
   attr_reader :expected_value
 
   def initialize(config)
+    super(config)
     @expected_value = hash?(config) ? config['match'] : config
   end
 

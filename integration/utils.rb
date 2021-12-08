@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+# Utility mixin.
 module Utils
   TABLE_LENGTH = 120
-  TABLE_STYLE = { width: TABLE_LENGTH }
+  TABLE_STYLE = { width: TABLE_LENGTH }.freeze
 
   def to_camelcase(str)
     str.chars.slice_before { |ch| /[A-Z]/.match?(ch) }.map(&:join).map(&:downcase).join('_')
@@ -23,7 +24,7 @@ module Utils
   end
 
   def print_banner(text, font = 'roman')
-    puts "\n" + Artii::Base.new(font:'roman').asciify(text)
+    puts "\n#{Artii::Base.new(font: font).asciify(text)}"
     puts "\n"
   end
 end

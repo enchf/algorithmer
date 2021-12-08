@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Mixin for executable variables boilerplate.
 module Executable
   def execute!
     yield if block_given?

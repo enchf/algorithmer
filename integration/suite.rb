@@ -4,6 +4,7 @@ require_relative 'entity_test'
 require_relative 'executable'
 require_relative 'utils'
 
+# Abstraction of a suite with multiple tests.
 class Suite
   include Executable
   include Utils
@@ -17,8 +18,8 @@ class Suite
 
   def run!
     execute! do
-       @tests.each(&:run!)
-       self.success = @tests.all?(&:success?)
+      @tests.each(&:run!)
+      self.success = @tests.all?(&:success?)
     end
   end
 
@@ -37,7 +38,7 @@ class Suite
   end
 
   def header
-    single_cell_matrix(@name).bold + "\n\n"
+    "#{single_cell_matrix(@name).bold}\n\n"
   end
 
   def pending_execution

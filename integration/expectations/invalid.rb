@@ -2,6 +2,7 @@
 
 require_relative 'base'
 
+# Abstraction for an invalid expectation configuration.
 class Invalid < Base
   def valid?
     false

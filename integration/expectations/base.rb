@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Base class for all framework expectations.
 class Base
+  # Validation helpers
   module Helpers
     def hash?(value)
       value.is_a?(Hash)

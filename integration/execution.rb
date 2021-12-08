@@ -3,8 +3,10 @@
 require 'problems/commands/entities/base'
 require_relative 'executable'
 
+# Abstraction of a single command execution with arguments.
+# Includes the validation of the expected result.
 class Execution
-  HEADERS = ['Name', 'Command', 'Expected', 'Result', 'Status'].freeze
+  HEADERS = %w[Name Command Expected Result Status].freeze
   SUCCESS = '✓'.bold.green
   FAILURE = 'x'.bold.red
   SPLITTER = ".{1,%d}"
@@ -41,7 +43,7 @@ class Execution
   end
 
   def command
-    "#{@action} #{@args.join(' ')}"
+    "#{@action} #{@args.join(" ")}"
   end
 
   def handle_invalid
@@ -54,8 +56,8 @@ class Execution
     instance = @tested_class.new(@args)
     @execution_result = instance.send(@action)
     self.success = validator.match?(@execution_result)
-  rescue => ex
-    @execution_result = ex.message
+  rescue StandardError => e
+    @execution_result = e.message
     self.success = false
   end
 
@@ -65,5 +67,5 @@ class Execution
 
   def printable(string, width = DEFAULT_WIDTH, rows = DEFAULT_ROWS)
     string.scan(Regexp.new(SPLITTER % width)).take(rows).join("\n")
-  end 
+  end
 end

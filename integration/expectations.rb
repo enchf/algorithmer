@@ -8,10 +8,8 @@ require_relative 'expectations/unimplemented'
 require_relative 'expectations/match'
 require_relative 'expectations/value'
 
+# Factory to register framework expectations.
 class Expectations
-  INVALID_EXPECTATION = :invalid_expectation
-  PROPERTIES = 
-
   extend Common::RegistryHandler
 
   def self.define_handler_method(handler)
