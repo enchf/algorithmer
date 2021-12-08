@@ -1,7 +1,16 @@
 name: 'General Commands'
 tests:
-  - class: Empty
-    actions:
-      - name: 'Check version'
-        action: version
-        expects: VERSION
+  - name: 'Check version'
+    action: version
+    expects: VERSION
+  - name: 'Actions without args'
+    action: ['add', 'edit', 'remove', 'show', 'list', 'init', 'run']
+    expects: UNIMPLEMENTED
+  - name: 'Init Project'
+    action: init
+    args: 'project dummy-project'
+    expects: 'A folder called dummy-project will be created to store problems'
+  - name: 'Actions invalid for a project'
+    action: ['add', 'edit', 'remove', 'show', 'list', 'version', 'run']
+    args: 'project dummy'
+    expects: UNIMPLEMENTED

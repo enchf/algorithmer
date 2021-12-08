@@ -7,7 +7,7 @@ It works as a CLI that provides commands to list, classify, run, add solutions a
 ## Installation
 
 * Install it as a global gem: `gem install problems`.
-* Test the installation running `problems -v`. It will display gem version.
+* Test the installation running `problems version`. It will display gem version.
 * This gem is intended to work as a CLI, but you can add it freely to a project.
 
 

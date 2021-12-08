@@ -16,6 +16,10 @@ class Expectations
     define_singleton_method(handler.name.downcase.to_sym) { handler.new }
   end
 
+  class << self
+    private :define_handler_method
+  end
+
   def self.add(handler)
     register(handler)
     define_handler_method(handler)

@@ -10,15 +10,14 @@ class Execution
   SUCCESS = '✓'.bold.green
   FAILURE = 'x'.bold.red
   SPLITTER = ".{1,%d}"
-  DEFAULT_WIDTH = 30
+  DEFAULT_WIDTH = 22
   DEFAULT_ROWS = 5
 
   include Executable
 
   attr_reader :validator
 
-  def initialize(clazz, name, action, args, expected)
-    @tested_class = clazz
+  def initialize(name, action, args, expected)
     @name = name
     @action = action
     @args = args.split(' ')
@@ -33,7 +32,13 @@ class Execution
   end
 
   def result
-    [@name, command, printable(validator.expected), printable(@execution_result), status_mark]
+    [
+      printable(@name), 
+      printable(command), 
+      printable(validator.expected), 
+      printable(@execution_result), 
+      status_mark
+    ]
   end
 
   private
@@ -43,7 +48,7 @@ class Execution
   end
 
   def command
-    "#{@action} #{@args.join(" ")}"
+    "problems #{@action} #{@args.join(" ")}"
   end
 
   def handle_invalid
@@ -53,8 +58,7 @@ class Execution
 
   def execute
     validate_action
-    instance = @tested_class.new(@args)
-    @execution_result = instance.send(@action)
+    @execution_result = `#{command}`
     self.success = validator.match?(@execution_result)
   rescue StandardError => e
     @execution_result = e.message
