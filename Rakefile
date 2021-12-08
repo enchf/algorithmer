@@ -13,4 +13,9 @@ require "rubocop/rake_task"
 
 RuboCop::RakeTask.new
 
-task default: %i[test rubocop]
+Rake::TestTask.new(:integration) do |t|
+  t.libs << "lib"
+  t.test_files = ['integration/commands_test.rb']
+end
+
+task default: %i[test rubocop integration]

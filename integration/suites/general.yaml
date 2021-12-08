@@ -1,0 +1,7 @@
+name: 'General Commands'
+tests:
+  - class: Empty
+    actions:
+      - name: 'Check version'
+        action: version
+        expects: VERSION
