@@ -24,7 +24,7 @@ class Suite
 
   def print
     puts header
-    puts executed? ? tests_output : pending_execution
+    executed? ? print_tests : puts(pending_execution)
   end
 
   private
@@ -44,7 +44,7 @@ class Suite
     single_cell_matrix('This suite has not been executed yet')
   end
 
-  def tests_output
-    @tests.map(&:output)
+  def print_tests
+    @tests.each(&:print)
   end
 end

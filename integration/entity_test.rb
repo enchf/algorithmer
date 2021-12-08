@@ -1,50 +1,52 @@
 # frozen_string_literal: true
 
 require_relative 'executable'
+require_relative 'execution'
+require_relative 'expectations'
 require_relative 'utils'
 
 class EntityTest
+  ENTITIES_PATH = 'problems/commands/entities/'
+  
   include Executable
   include Utils
 
-  BLBL = <<-yaml
-  name: 'The name of the suite'
-  tests:     # An array for each of the tests.
-    - class: EntityClassName
-      actions:
-        - name: 'name'    # Optional. The name of the test. If not present, the action is used.
-          action: action  # One of the valid actions defined in Base class. Can be many tests for each action.
-                          # Also, an array of actions can be passed as a batch test.
-          args: ''        # Arguments string. If not present, no args are passed.
-          expects:        # The expected result from execution.
-            property: ''  # A test-defined properties, listed below.
-            match: ''     # A regex string to match against.
-            value: ''     # An exact value to expect.
-            script: ''    # TODO: Executable script of assertions to be run.
-      setup:              # TODO: Array of commands to be executed before the test
-      teardown:           # TODO: Array of commands to be executed after the test
-  yaml
-
   def initialize(clazz, actions)
-    @tested_class = init_class(clazz)
+    @class_name = clazz
+    @tested_class = init_class
     @executions = build_actions(actions)
   end
 
   def run!
     execute! do
-      self.success = true
+      @executions.each(&:run!)
+      self.success = @executions.all?(&:success?)
     end
   end
 
-  def output
-    ''
+  def print
+    results = @executions.map(&:result)
+    puts build_table(results, headers: Execution::HEADERS, title: "Tested class: #{@class_name}")
   end
 
   private
 
-  def init_class(class_name)
+  def init_class
+    filename = to_camelcase(@class_name)
+    require ENTITIES_PATH + filename
+    Object.const_get("::Commands::#{@class_name}")
   end
 
   def build_actions(configs)
+    configs.flat_map do |config|
+      actions = config.fetch('action', [])
+      actions = [actions] unless actions.is_a?(Array)
+      
+      name = config.fetch('name', actions.join(', '))
+      args = config.fetch('args', '')
+      expected = Expectations.determine_by(config['expects'])
+
+      actions.map { |action| Execution.new(name, action, args, expected) }
+    end
   end
 end

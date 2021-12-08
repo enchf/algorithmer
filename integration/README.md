@@ -20,9 +20,10 @@ tests:     # An array for each of the tests.
                         # Also, an array of actions can be passed as a batch test.
         args: ''        # Arguments string. If not present, no args are passed.
         expects:        # The expected result from execution.
-          property: ''  # A test-defined properties, listed below.
+                        # The value can be a predefined expectation. See the ones listed below.
+                        # Also can be a direct value: a number, a string or a regular expresion in the form /<expression>/.
+          value: ''     # In the rare case you expect the ID of a predefined expectation, value: can be used.
           match: ''     # A regex string to match against.
-          value: ''     # An exact value to expect.
           script: ''    # TODO: Executable script of assertions to be run.
     setup:              # TODO: Array of commands to be executed before the test
     teardown:           # TODO: Array of commands to be executed after the test

@@ -12,12 +12,12 @@ module Utils
     raise "Missing config property #{property} in #{object}" unless config.key?(property)
   end
 
-  def single_cell_matrix(value, style = Utils::TABLE_STYLE)
-    build_table([[value]])
+  def single_cell_matrix(value, width = TABLE_LENGTH)
+    build_table([[value]], style: { width: width })
   end
 
-  def build_table(rows, style = Utils::TABLE_STYLE)
-    Terminal::Table.new(rows: rows, style: style).to_s
+  def build_table(rows, title: nil, headers: nil, style: TABLE_STYLE)
+    Terminal::Table.new(rows: rows, title: title, headings: headers, style: style).to_s
   end
 
   def print_banner(text, font = 'roman')
