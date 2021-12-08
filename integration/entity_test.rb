@@ -46,7 +46,7 @@ class EntityTest
       args = config.fetch('args', '')
       expected = Expectations.determine_by(config['expects'])
 
-      actions.map { |action| Execution.new(name, action, args, expected) }
+      actions.map { |action| Execution.new(@tested_class, name, action, args, expected) }
     end
   end
 end

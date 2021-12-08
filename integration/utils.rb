@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Utils
-  TABLE_LENGTH = 80
+  TABLE_LENGTH = 120
   TABLE_STYLE = { width: TABLE_LENGTH }
 
   def to_camelcase(str)
