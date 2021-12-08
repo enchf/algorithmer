@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require_relative 'entity_test'
+require_relative 'executable'
 require_relative 'utils'
 
 class Suite
+  include Executable
   include Utils
 
   def initialize(filename, config)
@@ -11,24 +13,18 @@ class Suite
     @filename = File.basename(@filepath)
     @name = config['name'] || @filename
     @tests = config.fetch('tests', []).map(&method(:build_test))
-    
-    @executed = false
-    @success = nil
   end
 
   def run!
-    @tests.each(&:run!)
-    @success = @tests.all?(&:success?)
-    @executed = true
+    execute! do
+       @tests.each(&:run!)
+       self.success = @tests.all?(&:success?)
+    end
   end
 
   def print
     puts header
-    puts @executed ? tests_output : pending_execution
-  end
-
-  def success?
-    @success
+    puts executed? ? tests_output : pending_execution
   end
 
   private
@@ -49,6 +45,6 @@ class Suite
   end
 
   def tests_output
-    @tests.each(&:print)
+    @tests.map(&:output)
   end
 end

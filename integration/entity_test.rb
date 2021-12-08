@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'executable'
 require_relative 'utils'
 
 class EntityTest
+  include Executable
   include Utils
 
   BLBL = <<-yaml
@@ -24,16 +26,25 @@ class EntityTest
   yaml
 
   def initialize(clazz, actions)
+    @tested_class = init_class(clazz)
+    @executions = build_actions(actions)
   end
 
   def run!
+    execute! do
+      self.success = true
+    end
   end
 
-  def success?
-    true
-  end
-
-  def print
+  def output
     ''
+  end
+
+  private
+
+  def init_class(class_name)
+  end
+
+  def build_actions(configs)
   end
 end
