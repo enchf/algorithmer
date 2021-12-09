@@ -60,6 +60,7 @@ class Suite
   def print_tests
     results = @executions.map(&:result)
     puts build_table(results, headers: Execution::HEADERS, title: @name)
+    puts "\n"
   end
 
   def fetch_as_array(config, property)
