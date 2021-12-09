@@ -21,5 +21,9 @@ module Commands
     def edit
       "Edit title as #{@title} for #{@problem} problem"
     end
+
+    def remove
+      "Remove title #{@title} if it is equal to the current title of #{@problem} problem"
+    end
   end
 end

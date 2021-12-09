@@ -60,6 +60,7 @@ Available problem properties are edited with the following commands:
 | `edit description`      | Override the description of the problem. It is edited in the console editor using nano.  |
 | `edit url <url>`        | Override the problem URL, which can refer to a link or to a coding challenges website.  |
 | `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title for problem-name`.  |
+| `remove \[title|description|url\] <value>` | Removes the property if and only if it matches the specified value.  |
 
 Values are fully shown with the problems show command: `problems show <problem-name>`.
 

@@ -22,5 +22,9 @@ module Commands
     def edit
       "Edit URL as #{@url} for #{@problem} problem"
     end
+
+    def remove
+      "Remove URL #{@url} if it is equal to the current URL of #{@problem} problem"
+    end
   end
 end

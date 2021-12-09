@@ -59,8 +59,6 @@ tests:
     args:
       - 'title of Problem'
       - 'Problem title'
-      - 'title title for Problem'
-      - "title 'Title' for Problem"
       - 'Problem description'
       - 'description of Problem'
       - 'url of Problem'
@@ -70,3 +68,11 @@ tests:
       - 'url http://goo.gl/123 of Problem'
       - 'url http://goo.gl/123 from Problem'
     expects: INVALID_ARGS
+  - name: 'Remove properties specifying the value'
+    action: 'remove'
+    args:
+      - 'title title for Problem'
+      - "title 'Title' for Problem"
+      - 'url http://goo.gl/123 for Problem'
+    expects:
+      match: "Remove (.+) (.+) if it is equal to the current (.+) of Problem problem"
