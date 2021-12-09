@@ -6,7 +6,6 @@ module Commands
   # Represents a problem within the project.
   class Problem < ProjectProperty
     NAME_VALID = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.freeze
-    
 
     validator args_size(1)
     validator valid_argument(NAME_VALID, 0)

@@ -48,7 +48,7 @@ class Suite
     name = config.fetch('name', actions.join(', '))
     expected = Expectations.determine_by(config['expects'])
 
-    combinations = actions.product(args).map do |action, args_str|
+    actions.product(args).map do |action, args_str|
       Execution.new(name, action, args_str, expected)
     end
   end

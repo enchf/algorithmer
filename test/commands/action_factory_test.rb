@@ -5,7 +5,7 @@ require 'problems/commands/action_factory'
 
 class ActionFactoryTest < Minitest::Test
   VALID_MESSAGE = 'Valid'
-  SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample.to_sym
+  SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample
   ARGS = %w[arg1 arg2].freeze
   NUMBER_OF_HANDLERS = 13
 
@@ -24,7 +24,7 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_valid_action
-    action = :run
+    action = 'run'
     handler = mock
     handler.expects(action).returns(VALID_MESSAGE)
 

@@ -33,10 +33,10 @@ class Execution
 
   def result
     [
-      printable(@name), 
-      printable(command), 
-      printable(validator.expected), 
-      printable(@execution_result), 
+      printable(@name),
+      printable(command),
+      printable(validator.expected),
+      printable(@execution_result),
       status_mark
     ]
   end

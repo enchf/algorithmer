@@ -67,7 +67,7 @@ class CommandsTest
   end
 
   def exit_status
-    raise "Integration testing failed. See above for failure details" unless @failures == 0
+    raise "Integration testing failed. See above for failure details" unless @failures.zero?
   end
 end
 

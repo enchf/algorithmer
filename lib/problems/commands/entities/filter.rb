@@ -13,7 +13,7 @@ module Commands
 
     validator keyword(BY_KEYWORD)
     validator { |_, *args| !empty.call(args) }
-    validator do |_, *args| 
+    validator do |_, *args|
       args.all? do |argument|
         SEARCH_TERM.call(argument) || TAG_TERM.call(argument)
       end
