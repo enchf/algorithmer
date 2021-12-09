@@ -8,6 +8,7 @@ module Commands
   # Define accepted actions and a default behavour for them.
   class Base
     ACTIONS = %i[add edit remove show list init run version].freeze
+    KEYWORDS = %w[tag title description url by test solution for with].freeze
 
     ACTIONS.each do |action|
       define_method(action) do
@@ -56,6 +57,10 @@ module Commands
 
     def self.number(index = 1)
       proc { |*args| /^[0-9]+$/.match?(args[index]) }
+    end
+
+    def self.not_a_keyword(index = 0)
+      proc { |*args| KEYWORDS.none? { |keyword| keyword == args[index] } }
     end
   end
 end
