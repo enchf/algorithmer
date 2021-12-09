@@ -6,7 +6,7 @@ module Commands
   # Represents a tag assigned to a problem.
   class Tag < ProblemProperty
     TAG_KEYWORD = 'tag'
-    TAG_VALID = /^[a-z]+$/.freeze
+    TAG_VALID = /^#[a-z]+$/.freeze
 
     validator args_size(4)
     validator keyword(TAG_KEYWORD)
@@ -20,6 +20,10 @@ module Commands
 
     def add
       "Add #{@tag} tag (if not already present) to #{@problem} problem"
+    end
+
+    def remove
+      "Remove #{@tag} tag (if already present) from #{@problem} problem"
     end
   end
 end

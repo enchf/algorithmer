@@ -22,6 +22,7 @@ class CommandsTest
   def run
     print_banner('CLI Testing')
     run_suites
+    collect_stats
     show_info
     exit_status
   end
@@ -47,11 +48,15 @@ class CommandsTest
     end
   end
 
-  def show_info
-    @successful = @suites.count(&:success?)
+  def collect_stats
+    @total = @suites.sum(&:size)
+    @failures = @suites.sum(&:failures)
+    @successful = @total - @failures
+  end
 
+  def show_info
     labels = ["Suites found", "Successful executions", "Failures"]
-    values = [@suites.size, @successful, @suites.size - @successful]
+    values = [@total, @successful, @failures]
     colors = %i[white green red]
 
     info = labels.zip(values, colors)
@@ -62,7 +67,7 @@ class CommandsTest
   end
 
   def exit_status
-    raise "Integration testing failed. See above for failure details" unless @suites.size == @successful
+    raise "Integration testing failed. See above for failure details" unless @failures.zero?
   end
 end
 

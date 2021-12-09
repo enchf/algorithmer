@@ -9,7 +9,7 @@ module Commands
 
     validator args_size(3)
     validator keyword(DESCRIPTION_KEYWORD)
-    validator for_keyword
+    validator for_keyword(1)
 
     def initialize(_, _, problem)
       @problem = problem
@@ -17,6 +17,10 @@ module Commands
 
     def edit
       "Edit description for #{@problem} problem"
+    end
+
+    def remove
+      "Remove description value (if it is present) from #{@problem} problem"
     end
   end
 end

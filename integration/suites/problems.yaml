@@ -1,0 +1,39 @@
+name: 'Problems CRD'
+tests:
+  - name: 'Test valid problem names'
+    action: 'add'
+    args: ['startsWithLower', 'StartWithUppercase', 'Contain1Numbers2', 'Special-Chars_', '1StartWithNumber']
+    expects:
+      match: 'A problem with id (.+) will be added to the project'
+  - name: 'Test invalid problem names'
+    action: 'add'
+    args: ['-startWithChar', 'Invalid@Chars', 'Have Spaces']
+    expects: INVALID_ARGS
+  - name: 'Add a problem'
+    action: 'add'
+    args: 'Problem'
+    expects: 'A problem with id Problem will be added to the project'
+  - name: 'Show a problem'
+    action: 'show'
+    args: 'Problem'
+    expects: 'Show the details of problem Problem'
+  - name: 'Remove a problem'
+    action: 'remove'
+    args: 'Problem'
+    expects: 'After asking for confirmation, problem Problem will be deleted'
+  - name: 'List all problems'
+    action: 'list'
+    expects: 'List all problems'
+  - name: 'Problem search'
+    action: 'list'
+    args: ['by "#some" "#tags"', "by 'search-term'", "by '#search' 'combined' with '#tags'"]
+    expects:
+      match: '^List the problems that meet the following filters: (.*)$'
+  - name: 'Problems with keywords as names'
+    action: 'add'
+    args: ['tag', 'title', 'description', 'url', 'by', 'test', 'solution ', 'for', 'with']
+    expects: INVALID_ARGS
+  - name: 'Problems filters cannot be empty'
+    action: 'list'
+    args: 'by'
+    expects: INVALID_ARGS

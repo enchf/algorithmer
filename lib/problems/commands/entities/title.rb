@@ -6,7 +6,7 @@ module Commands
   # Represents the title of a problem.
   class Title < ProblemProperty
     TITLE_KEYWORD = 'title'
-    TITLE_VALID = /^'[a-zA-Z0-9 _-]+'$/.freeze
+    TITLE_VALID = /^[a-zA-Z0-9 _-]+$/.freeze
 
     validator args_size(4)
     validator keyword(TITLE_KEYWORD)
@@ -20,6 +20,10 @@ module Commands
 
     def edit
       "Edit title as #{@title} for #{@problem} problem"
+    end
+
+    def remove
+      "Remove title #{@title} if it is equal to the current title of #{@problem} problem"
     end
   end
 end

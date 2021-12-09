@@ -4,11 +4,11 @@ require_relative 'match'
 
 # Match expectation that search for the unimplemented warning string.
 class Unimplemented < Match
-  UNIMPLEMENTED = 'UNIMPLEMENTED'
+  ID = 'UNIMPLEMENTED'
   MATCH_STRING = '^Action ([a-z]+) is not defined for (.+)$'
 
   def self.accept?(config)
-    UNIMPLEMENTED == config
+    ID == config
   end
 
   def match_string

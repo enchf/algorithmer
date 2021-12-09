@@ -9,6 +9,7 @@ module Commands
 
     validator args_size(1)
     validator valid_argument(NAME_VALID, 0)
+    validator not_a_keyword
 
     def initialize(name)
       @name = name

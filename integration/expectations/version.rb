@@ -5,8 +5,10 @@ require_relative 'value'
 
 # Value expectation that expects gem version value.
 class Version < Value
+  ID = 'VERSION'
+
   def self.accept?(config)
-    config == 'VERSION'
+    ID == config
   end
 
   def expected_value

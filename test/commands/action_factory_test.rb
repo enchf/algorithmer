@@ -24,7 +24,7 @@ class ActionFactoryTest < Minitest::Test
   end
 
   def test_valid_action
-    action = :run
+    action = 'run'
     handler = mock
     handler.expects(action).returns(VALID_MESSAGE)
 
