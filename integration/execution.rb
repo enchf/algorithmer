@@ -66,7 +66,7 @@ class Execution
   end
 
   def validate_action
-    raise "Action #{@action} is invalid" unless ::Commands::Base::ACTIONS.include?(@action.to_sym)
+    raise "Action #{@action} is invalid" unless ::Commands::Base::ACTIONS.include?(@action)
   end
 
   def printable(string, width = DEFAULT_WIDTH, rows = DEFAULT_ROWS)

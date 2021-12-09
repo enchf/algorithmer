@@ -5,7 +5,7 @@ require 'problems/commands/action_factory'
 
 class ActionFactoryTest < Minitest::Test
   VALID_MESSAGE = 'Valid'
-  SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample
+  SAMPLE_ACTION = ::Commands::Base::ACTIONS.sample.to_sym
   ARGS = %w[arg1 arg2].freeze
   NUMBER_OF_HANDLERS = 13
 

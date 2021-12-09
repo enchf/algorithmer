@@ -45,7 +45,7 @@ module Commands
     register NumberedSolution
 
     def self.resolve(action, args)
-      Base::ACTIONS.include?(action.to_sym) ? determine_handler(*args).send(action) : "Invalid action: #{action}"
+      Base::ACTIONS.include?(action) ? determine_handler(*args).send(action) : "Invalid action: #{action}"
     end
 
     def self.determine_handler(*args)

@@ -7,11 +7,11 @@ module Commands
   # Base entity class.
   # Define accepted actions and a default behavour for them.
   class Base
-    ACTIONS = %i[add edit remove show list init run version].freeze
+    ACTIONS = %w[add edit remove show list init run version].freeze
     KEYWORDS = %w[tag title description url by test solution for with].freeze
 
     ACTIONS.each do |action|
-      define_method(action) do
+      define_method(action.to_sym) do
         "Action #{action} is not defined for #{object_name}"
       end
     end
