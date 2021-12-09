@@ -29,6 +29,18 @@ class Suite
     executed? ? print_tests : puts(pending_execution)
   end
 
+  def size
+    @executions.size
+  end
+
+  def successfuls
+    @executions.count(&:success?)
+  end
+
+  def failures
+    @executions.count { |execution| !execution.success? }
+  end
+
   private
 
   def build_test(config)
