@@ -21,5 +21,9 @@ module Commands
     def add
       "Add #{@tag} tag (if not already present) to #{@problem} problem"
     end
+
+    def remove
+      "Remove #{@tag} tag (if already present) from #{@problem} problem"
+    end
   end
 end

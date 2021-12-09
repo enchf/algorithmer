@@ -4,7 +4,7 @@ tests:
     action: ['add', 'remove']
     args: "tag '#tag' for Problem"
     expects:
-      match: '(Add|Remove) #tag tag \(if (not)? already present\) (to|from) Problem problem'
+      match: '(Add|Remove) #tag tag \(if (not ){0,1}already present\) (to|from) Problem problem'
   - name: 'Add or remove a tag to a problem with invalid syntax'
     action: ['add', 'remove']
     args: ['tag "#tag" Problem', 'tag "#tag" to -Problem']
