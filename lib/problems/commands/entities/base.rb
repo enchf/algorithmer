@@ -35,10 +35,6 @@ module Commands
       self.class.name.split('::').last.downcase
     end
 
-    def self.not_empty_args
-      proc { |*args| !args.empty? }
-    end
-
     def self.args_size(size)
       proc { |*args| args.size == size }
     end
@@ -61,6 +57,10 @@ module Commands
 
     def self.not_a_keyword(index = 0)
       proc { |*args| KEYWORDS.none? { |keyword| keyword == args[index] } }
+    end
+
+    def self.empty
+      proc { |*args| args.reject(&:nil?).reject(&:empty?).empty? }
     end
   end
 end

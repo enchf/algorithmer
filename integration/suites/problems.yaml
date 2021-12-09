@@ -33,3 +33,7 @@ tests:
     action: 'add'
     args: ['tag', 'title', 'description', 'url', 'by', 'test', 'solution ', 'for', 'with']
     expects: INVALID_ARGS
+  - name: 'Problems filters cannot be empty'
+    action: 'list'
+    args: 'by'
+    expects: INVALID_ARGS

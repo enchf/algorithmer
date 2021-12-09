@@ -11,8 +11,8 @@ module Commands
     SEARCH_TERM = valid_value(Title::TITLE_VALID)
     TAG_TERM = valid_value(Tag::TAG_VALID)
 
-    validator not_empty_args
     validator keyword(BY_KEYWORD)
+    validator { |_, *args| !empty.call(args) }
     validator do |_, *args| 
       args.all? do |argument|
         SEARCH_TERM.call(argument) || TAG_TERM.call(argument)

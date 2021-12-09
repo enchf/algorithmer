@@ -6,7 +6,7 @@ module Commands
   # Represents emtpy argument list.
   # This is useful for general commands, like version or help.
   class Empty < Base
-    validator { |*args| args.reject(&:nil?).reject(&:empty?).empty? }
+    validator empty
 
     def version
       Problems::VERSION
