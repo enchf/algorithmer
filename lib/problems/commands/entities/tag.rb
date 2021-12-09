@@ -19,7 +19,7 @@ module Commands
     end
 
     def add
-      "Add #{@tag} tag (if not already present) to #{@problem} problem"
+      "Add ##{@tag} tag (if not already present) to #{@problem} problem"
     end
   end
 end

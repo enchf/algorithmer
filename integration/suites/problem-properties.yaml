@@ -1,0 +1,68 @@
+name: 'Problem Properties Test'
+tests:
+  - name: 'Add or remove a tag to a problem'
+    action: ['add', 'remove']
+    args: 'tag #tag for Problem'
+    expects: 'Add #tag tag (if not already present) to Problem problem'
+  - name: 'Add or remove a tag to a problem with invalid syntax'
+    action: ['add', 'remove']
+    args: ['tag #tag to Problem', 'tag #tag to -Problem']
+    expects: INVALID_ARGS
+  - name: 'Add or remove an invalid tag to a problem'
+    action: ['add', 'remove']
+    args: ['tag #123 for Problem', 'tag tag for Problem', 'tag #-tag for Problem']
+    expects: INVALID_ARGS
+  - name: 'Edit problem title'
+    action: 'edit'
+    args: "title 'Title' for Problem"
+    expects: 'Edit title as Title for Problem problem'
+  - name: 'Edit problem description'
+    action: 'edit'
+    args: 'description for Problem'
+    expects: 'Edit description for Problem problem'
+  - name: 'Edit problem URL'
+    action: 'edit'
+    args: 'url http://codechallenges.io/123 for Problem'
+    expects: 'Edit URL as http://codechallenges.io/123 for Problem problem'
+  - name: 'Remove problem title'
+    action: 'remove'
+    args: 'title for Problem'
+    expects: 'Remove title value (if it is present) from Problem problem'
+  - name: 'Remove problem description'
+    action: 'remove'
+    args: 'description for Problem'
+    expects: 'Remove description value (if it is present) from Problem problem'
+  - name: 'Remove problem URL'
+    action: 'remove'
+    args: 'url for Problem'
+    expects: 'Remove url value (if it is present) from Problem problem'
+  - name: 'Invalid syntax when editing problem property'
+    action: 'edit'
+    args:
+      - 'title of Problem'
+      - 'Problem title'
+      - 'title title for Problem'
+      - 'Problem description'
+      - 'description of Problem'
+      - 'url of Problem'
+      - 'Problem url'
+      - "url 'URL' for Problem"
+      - 'url 123 for Problem'
+      - 'url http://goo.gl/123 of Problem'
+    expects: INVALID_ARGS
+  - name: 'Invalid syntax when removing a problem property'
+    action: 'remove'
+    args:
+      - 'title of Problem'
+      - 'Problem title'
+      - 'title title for Problem'
+      - "title 'Title' for Problem"
+      - 'Problem description'
+      - 'description of Problem'
+      - 'url of Problem'
+      - 'Problem url'
+      - "url 'URL' for Problem"
+      - 'url 123 for Problem'
+      - 'url http://goo.gl/123 of Problem'
+      - 'url http://goo.gl/123 from Problem'
+    expects: INVALID_ARGS

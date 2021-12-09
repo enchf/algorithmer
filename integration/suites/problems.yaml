@@ -1,4 +1,4 @@
-name: 'Problems creation and editing'
+name: 'Problems CRD'
 tests:
   - name: 'Test valid problem names'
     action: 'add'
@@ -9,3 +9,23 @@ tests:
     action: 'add'
     args: ['-startWithChar', 'Invalid@Chars', 'Have Spaces']
     expects: INVALID_ARGS
+  - name: 'Add a problem'
+    action: 'add'
+    args: 'Problem'
+    expects: 'A problem with id Problem will be added to the project'
+  - name: 'Show a problem'
+    action: 'show'
+    args: 'Problem'
+    expects: 'Show the details of problem Problem'
+  - name: 'Remove a problem'
+    action: 'remove'
+    args: 'Problem'
+    expects: 'After asking for confirmation, problem Problem will be deleted'
+  - name: 'List all problems'
+    action: 'list'
+    expects: 'List all problems'
+  - name: 'Problem search'
+    action: 'list'
+    args: ['#by #tags', "'search-term'", "#search 'combined' #with 'tags'"]
+    expects:
+      match: '^List the problems that meet the following filters: (.*)$'

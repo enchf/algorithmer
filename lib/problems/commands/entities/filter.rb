@@ -7,9 +7,15 @@ require_relative 'title'
 module Commands
   # Represents a filter applied against the list of problems.
   class Filter < ProblemProperty
-    FILTERS = [valid_value(Title::TITLE_VALID), valid_value(Tag::TAG_VALID)].freeze
+    SEARCH_TERM = valid_value(Title::TITLE_VALID)
+    TAG_TERM = valid_value(Tag::TAG_VALID)
 
-    validator { |*args| args.empty? || args.any? { |filter| FILTERS.any?(filter) } }
+    validator not_empty_args
+    validator do |*args| 
+      args.all? do |argument|
+        SEARCH_TERM.call(argument) || TAG_TERM.call(argument)
+      end
+    end
 
     def initialize(*filters)
       @filters = filters.select { |filter| FILTERS.any?(filter) }

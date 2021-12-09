@@ -34,6 +34,10 @@ module Commands
       self.class.name.split('::').last.downcase
     end
 
+    def self.not_empty_args
+      proc { |*args| !args.empty? }
+    end
+
     def self.args_size(size)
       proc { |*args| args.size == size }
     end

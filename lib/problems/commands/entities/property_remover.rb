@@ -17,7 +17,7 @@ module Commands
     end
 
     def remove
-      "Remove the value of the property #{@property} (if it is present) from #{problem} problem"
+      "Remove #{@property} value (if it is present) from #{@problem} problem"
     end
   end
 end

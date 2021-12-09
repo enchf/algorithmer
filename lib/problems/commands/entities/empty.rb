@@ -12,6 +12,10 @@ module Commands
       Problems::VERSION
     end
 
+    def list
+      'List all problems'
+    end
+
     def object_name
       'empty arguments'
     end
