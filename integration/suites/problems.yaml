@@ -26,6 +26,10 @@ tests:
     expects: 'List all problems'
   - name: 'Problem search'
     action: 'list'
-    args: ['#by #tags', "'search-term'", "#search 'combined' #with 'tags'"]
+    args: ['by "#some" "#tags"', "by 'search-term'", "by '#search' 'combined' with '#tags'"]
     expects:
       match: '^List the problems that meet the following filters: (.*)$'
+  - name: 'Problems with keywords as names'
+    action: 'add'
+    args: ['tag', 'title', 'description', 'url', 'by', 'test', 'solution ', 'for', 'with']
+    expects: INVALID_ARGS

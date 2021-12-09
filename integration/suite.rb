@@ -25,7 +25,6 @@ class Suite
   end
 
   def print
-    puts header
     executed? ? print_tests : puts(pending_execution)
   end
 
@@ -54,17 +53,13 @@ class Suite
     end
   end
 
-  def header
-    "\n\n#{single_cell_matrix(@name).bold}\n\n"
-  end
-
   def pending_execution
     single_cell_matrix('This suite has not been executed yet')
   end
 
   def print_tests
     results = @executions.map(&:result)
-    puts build_table(results, headers: Execution::HEADERS)
+    puts build_table(results, headers: Execution::HEADERS, title: @name)
   end
 
   def fetch_as_array(config, property)

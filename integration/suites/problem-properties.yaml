@@ -1,20 +1,25 @@
 name: 'Problem Properties Test'
 tests:
-  - name: 'Add or remove a tag to a problem'
+  - name: 'Add a tag to a problem'
     action: ['add', 'remove']
-    args: 'tag #tag for Problem'
-    expects: 'Add #tag tag (if not already present) to Problem problem'
+    args: "tag '#tag' for Problem"
+    expects:
+      match: '(Add|Remove) #tag tag \(if (not)? already present\) (to|from) Problem problem'
   - name: 'Add or remove a tag to a problem with invalid syntax'
     action: ['add', 'remove']
-    args: ['tag #tag to Problem', 'tag #tag to -Problem']
+    args: ['tag "#tag" Problem', 'tag "#tag" to -Problem']
+    expects: INVALID_ARGS
+  - name: 'Forgot to add quotes to tag'
+    action: 'add'
+    args: 'tag #tag for Problem'
     expects: INVALID_ARGS
   - name: 'Add or remove an invalid tag to a problem'
     action: ['add', 'remove']
-    args: ['tag #123 for Problem', 'tag tag for Problem', 'tag #-tag for Problem']
+    args: ['tag "#123" for Problem', 'tag tag for Problem', 'tag "#-tag" for Problem', 'tag "#tag2" for Problem']
     expects: INVALID_ARGS
   - name: 'Edit problem title'
     action: 'edit'
-    args: "title 'Title' for Problem"
+    args: ["title 'Title' for Problem", 'title Title for Problem']
     expects: 'Edit title as Title for Problem problem'
   - name: 'Edit problem description'
     action: 'edit'
@@ -41,7 +46,6 @@ tests:
     args:
       - 'title of Problem'
       - 'Problem title'
-      - 'title title for Problem'
       - 'Problem description'
       - 'description of Problem'
       - 'url of Problem'

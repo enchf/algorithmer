@@ -54,9 +54,9 @@ Available problem properties are edited with the following commands:
 
 | Command                 | Action |
 |-------------------------|--------|
-| `add tag <tag>`         | Adds a tag, it could be the topic related to the problem. For example 'graphs'.  |
-| `remove tag <tag>`      | Removes a tag.  |
-| `edit title '<title>'`  | Override the formal title of the problem. It should be within double or single quotes.  |
+| `add tag '#tag'`        | Adds a tag, like a topic, i.e. '#graphs'. Tags should be between quotes and start with #. |
+| `remove tag '#tag'`     | Removes a tag. Tags should be between quotes and start with #. |
+| `edit title '<title>'`  | Override the formal title of the problem. It could be within double or single quotes.  |
 | `edit description`      | Override the description of the problem. It is edited in the console editor using nano.  |
 | `edit url <url>`        | Override the problem URL, which can refer to a link or to a coding challenges website.  |
 | `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title for problem-name`.  |
@@ -67,13 +67,13 @@ Values are fully shown with the problems show command: `problems show <problem-n
 
 Problems can be listed or filtered using the following commands:
 
-| Command                              | Description |
-|--------------------------------------|-------------|
-| `problems list`                      | List all problems.  |
-| `problems list '<search-criteria>'`  | Filter problems by title using the search criteria within double or single quotes.  |
-| `problems list #tag1 #tag2 ...`      | Filter problems by multiple tags each one indicated after the `#` sign.  |
+| Command                                 | Description |
+|-----------------------------------------|-------------|
+| `problems list`                         | List all problems.  |
+| `problems list by filter1 filter2`      | Filter problems by title or description searching for the specified words.  |
+| `problems list by '#tag1' '#tag2' ...`  | Filter problems by multiple tags formatted between quotes and starting with #.  |
 
-Search criteria and tags are compatible to be used together.
+Search criteria and tags are compatible to be used together, and they will work as an AND operator.
 
 ### Manage test cases
 
