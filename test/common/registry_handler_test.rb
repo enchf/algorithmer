@@ -8,6 +8,7 @@ class RegistryHandlerTest < Minitest::Test
   class Bar; end
   class Baz; end
   class Boo; end
+  class Woo; end
 
   class A
     extend Common::RegistryHandler
@@ -42,6 +43,10 @@ class RegistryHandlerTest < Minitest::Test
     extend Common::RegistryHandler
     register { |*args| args.nil? }
     register { |*args| args.empty? }
+  end
+
+  class G < E
+    register Woo
   end
 
   def test_methods_available
@@ -93,5 +98,14 @@ class RegistryHandlerTest < Minitest::Test
     end
     refute F.registries.first.call
     assert F.registries.last.call
+  end
+
+  def test_registries_available_in_deeper_inheritance
+    assert_equal A.default, G.default
+    assert_equal E.default, G.default
+    assert_equal [Bar, Baz, Boo, Woo], G.registries
+    assert_equal(Foo, G.find_by { |handler| handler.name == 'Taz' })
+    assert_equal(Woo, G.find_by { |handler| handler.name.end_with?('Woo') })
+    assert_equal(Boo, G.find_by { |handler| handler.name.end_with?('Boo') })
   end
 end
