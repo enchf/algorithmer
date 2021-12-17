@@ -17,9 +17,21 @@ After installed, this gem is used as a command to create a problem repository an
 
 ### Initialize
 
-Create a problem repository with the command `problems init project <name>`. This will create a folder with a project scaffold.
-Gem config files will be located in the `.problems` folder. 
-If you track your problems and solutions in a Git repository, it is encouraged to add this folder to it.
+The first step is to create a project.
+
+```sh
+problems init project Project
+```
+
+* This will create a folder with a folder called `.problems` inside it.
+* `.problems` folder holds project data and configuration.
+* If you track your problems and solutions in a Git repository, it is encouraged to add this folder to it.
+
+Project name accepts the following characters:
+
+* Upper and lower case letters.
+* Numbers
+
 
 ### General commands
 
