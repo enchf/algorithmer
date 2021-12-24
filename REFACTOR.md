@@ -1,51 +1,5 @@
 # Refactor details
 
-New specification:
-
-```sh
-version
-
-init project ACM
-
-add 3N+1
-add Minesweeper
-show 3N+1
-remove TestProblem
-
-list
-list by ‘filter’ ‘#tag’
-
-edit 3N+1 title ‘3N + 1’
-edit 3N+1 url http://uva.es/1
-edit 3N+1 description
-
-remove 3N+1 title
-remove 3N+1 url
-remove 3N+1 description
-
-add tag recursion to 3N+1
-remove tag acm from 3N+1
-list 3N+1 tags
-
-add test to 3N+1
-list tests of 3N+1
-show test # of 3N+1
-edit test # of 3N+1
-remove test # from 3N+1
-
-add kotlin solution to 3N+1
-list solutions of 3N+1
-show solution # of 3N+1
-edit solution # of 3N+1
-remove solution # from 3N+1
-
-run 3N+1 
-run tests 1,2 of 3N+1 
-run tests 1,2 of 3N+1 using solutions 1,2
-run solutions 1,2 of 3N+1
-run solutions 1,2 of 3N+1 using tests 1,2
-```
-
 Preview of the CLI:
 
 ```ruby
@@ -111,7 +65,7 @@ class Project < Base
   action :init do
     arguments do
       reserved_word :project
-      name /^[A-Za-z0-9]+$/
+      name /^[A-Za-z0-9-_]+$/
     end
   end
 

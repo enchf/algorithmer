@@ -15,6 +15,7 @@ It works as a CLI that provides commands to list, classify, run, add solutions a
 
 After installed, this gem is used as a command to create a problem repository and track and manage the problems inside it.
 
+
 ### Initialize
 
 The first step is to create a project.
@@ -25,109 +26,180 @@ problems init project Project
 
 * This will create a folder with a folder called `.problems` inside it.
 * `.problems` folder holds project data and configuration.
-* If you track your problems and solutions in a Git repository, it is encouraged to add this folder to it.
+* If the problems and solutions are wanted to be tracked in a Git repository, add this folder to it.
 
 Project name accepts the following characters:
 
 * Upper and lower case letters.
-* Numbers
+* Numbers.
+* Hyphen and Underscore.
 
 
-### General commands
+### Manage Problems
 
-The gem works in general as a CRUD of problems and their properties. Then, sub-commands for the CRUD operations are available.
-In general, the structures for that will be the following:
+Problems can be added, visualized and removed.
 
-* For problems themselves: `problems [add|remove|show] <problem-name>`.
-* For problem listing: `problems list <filters>`.
-* For problem properties: `problems [add|edit|remove|list|show] <property> for <problem-name>`.
+A problem is added using the `add` action with the problem name:
 
-Not all the sub-commands are going to be available for all the problem properties, those will be detailed in next sections.
+```sh
+add 3N+1
+add Minesweeper
+```
 
-### Problems
+A problem name accepts the following characters:
 
-Actions on problems are described in the table below:
+* Upper and lower case letters.
+* Numbers.
+* Plus sign, hyphen and underscore.
 
-| Action  | Syntax                            | Notes  |
-|---------|-----------------------------------|--------|
-| add     | `problems add <problem-name>`     | `<problem-name>` accepts the following characters: `[a-zA-Z0-9_-]`.  |
-| remove  | `problems remove <problem-name>`  | Will ask for confirmation. Problem and all data are going to be deleted.  |
-| list    | `problems list <filters>`         | See a detailed description in [Listing problems](#listing-problems) section.  |
-| show    | `problems show <problem-name>`    | Shows the details of a problem.  |
+The problem details (title, URL, description, tags) can be visualized using `show`:
 
-There are reserved words that refer to problem properties and cannot be used as a problem name, and are the following: 
-`tag, title, description, url, test, solution`.
+```sh
+show 3N+1
+```
+
+A problem can be removed from the project, using `remove`. A confirmation will be prompted:
+
+```sh
+remove TestProblem
+```
+
+
+### Listing Problems
+
+Problems can be listed using:
+
+```sh
+list
+list by filter '#tag' 'text with spaces'
+```
+
+* The form without arguments will list all problems in the project.
+* The `list by` form accepts filters such as text and tags.
+* Text can be a word and be without quotes.
+* A tag should be within quotes and starts with the # sign to differentiate them from the text filters.
+* Tags can only contain underscore letters.
+* Remember to use quotes in tags otherwise bash will interpret them as comments.
+* Text can be placed within single or double quotes, and contain spaces or other characters.
+* Text is used to lookup in the problem title and description.
+* All the filters will work as an AND operator.
+
 
 ### Problem Properties
 
-Properties are edited using the following syntax: `problems <action> <property> for <problem-name>`.
-For example, to edit a problem description, the command is `problems edit description for problem-name`.
-Available problem properties are edited with the following commands:
+Each problem can have a title, URL and description. To manipulate them, `edit` and `remove` actions are used.
+When editing, if the property value is not present, it will be added, otherwise it will be overwritten.
 
-| Command                 | Action |
-|-------------------------|--------|
-| `add tag '#tag'`        | Adds a tag, like a topic, i.e. '#graphs'. Tags should be between quotes and start with #. |
-| `remove tag '#tag'`     | Removes a tag. Tags should be between quotes and start with #. |
-| `edit title '<title>'`  | Override the formal title of the problem. It could be within double or single quotes.  |
-| `edit description`      | Override the description of the problem. It is edited in the console editor using nano.  |
-| `edit url <url>`        | Override the problem URL, which can refer to a link or to a coding challenges website.  |
-| `remove \[title|description|url\]`  | Removes the property, for example: `problems remove title for problem-name`.  |
-| `remove \[title|description|url\] <value>` | Removes the property if and only if it matches the specified value.  |
+To edit the title, it is specified within quotes:
 
-Values are fully shown with the problems show command: `problems show <problem-name>`.
+```sh
+edit 3N+1 title '3N + 1'
+```
 
-### Listing problems
+To edit the problem URL, a well-formatted URL is specified:
 
-Problems can be listed or filtered using the following commands:
+```sh
+edit 3N+1 url http://uva.es/1
+```
 
-| Command                                 | Description |
-|-----------------------------------------|-------------|
-| `problems list`                         | List all problems.  |
-| `problems list by filter1 filter2`      | Filter problems by title or description searching for the specified words.  |
-| `problems list by '#tag1' '#tag2' ...`  | Filter problems by multiple tags formatted between quotes and starting with #.  |
+To edit the problem description, a bash editor (nano, vi) will be opened. The file edited will be stored for it.
 
-Search criteria and tags are compatible to be used together, and they will work as an AND operator.
+```sh
+edit 3N+1 description
+```
+
+Any of the properties can be removed to reset the value, using the `remove` action:
+
+```sh
+remove 3N+1 title
+remove 3N+1 url
+remove 3N+1 description
+```
+
+
+### Manage Problem Tags
+
+Problems can have tags to help in classifying them. Tags can refer to a programming website or a topic or anything useful.
+
+A tag is added using the `add` action. Tags are not required to use quotes and the # sign for simplicity:
+
+```sh
+add tag recursion to 3N+1
+```
+
+A tag can also be removed using the `remove` action:
+
+```sh
+remove tag acm from 3N+1
+```
+
+And finally, tags of a specific problem can be listed using `list`. Tags also are displayed when a problem is visualized using `show`:
+
+```
+list 3N+1 tags
+```
 
 ### Manage test cases
 
 Test cases can be added, edited, listed, viewed and removed for a problem.
+
 When a test case is added, it is assigned with a sequential number, so to edit or remove this number needs to be indicated.
-When adding or editing a test case, an editor will be opened and the input and output values should be pasted or typed in the indicated sections.
+When adding or editing a test case, an editor will be opened to edit both the input and expected output.
 
-The base command for this is `problems <action> test for <problem-name>`.
-Action list is as follows:
+A test is added using `add` action:
 
-| Actions                 | Description |
-|-------------------------|-------------|
-| `add`                   | Adds a test case.  |
-| `list`                  | List all test cases. The test number will appear in a column.  |
-| `show test <test-number>`    | Display the input and expected output of the indicated test case.  |
-| `edit test <test-number>`    | Edits the indicated test case.  |
-| `remove test <test-number>`  | Removes a test case. Will ask for confirmation. |
+```sh
+add test to 3N+1
+```
 
-### Solutions
+All tests cases are listed using `list`:
+
+```sh
+list tests of 3N+1
+```
+
+A specific test can be displayed, edited or removed using `show`, `edit` or `remove`, respectively. 
+In these commands the test case number is indicated as displayed in `list`:
+
+```sh
+show test # of 3N+1
+edit test # of 3N+1
+remove test # from 3N+1
+```
+
+
+### Code Solutions
 
 Solutions work the same as tests cases: can be added, edited, listed, viewed and removed for a problem.
 Also, each one is assigned with a sequential number, so to edit or remove this number needs to be indicated.
-When editing a solution, an editor will be opened to edit the code.
+
+In adition, a programming language should be specified. 
+Problems currently support templates for Kotlin, Ruby, Java and Python.
+
+When adding or editing a solution, an editor will be opened to edit the code.
 By default will lookup for these editors in order: Visual Studio Code and nano.
 
-The base command for this is `problems <action> solution for <problem-name> <extras>`.
-Action list is as follows:
+A solution is added using the `add` action. Programming language is specified in lower case letters:
 
-| Actions                     | Description |
-|-----------------------------|-------------|
-| `add`                       | Adds a solution.  |
-| `list`                      | List all solutions. Solution number will appear in a column.  |
-| `show solution <solution-number>`    | Display the code of the indicated solution.  |
-| `edit solution <solution-number>`    | Edits the indicated solution in VS or nano.  |
-| `remove solution <solution-number>`  | Removes a solution. Will ask for confirmation.  |
+```sh
+add kotlin solution to 3N+1
+```
 
-The add command needs an extra configuration to specify the programming language to be used.
-Currently, Kotlin, Ruby and Python are supported.
-This config is specified appending the following: `with [kotlin|python|ruby]`.
+To list the current solutions of a problem, the `list` action is used:
 
-For each solution a folder with a template will be generated. 
+```sh
+list solutions of 3N+1
+```
+
+To display, edit or remove a solution, the number of the solution is specified:
+
+```sh
+show solution # of 3N+1
+edit solution # of 3N+1
+remove solution # from 3N+1
+```
+
+For each solution a file will be generated from a template. 
 The template is a function called `solve` that accepts an array of strings as input and returns a single string.
 The input is the test case input splitted in lines, and the output is the program output for each input test case.
 Output will be compared with the expected output in the test case.
@@ -137,7 +209,7 @@ Internally, the gem will incorporate the code and call the `solve` function with
 
 ```kotlin
 fun solve(lines: List<String>): String {
-
+  ""
 }
 ```
 
@@ -145,6 +217,7 @@ fun solve(lines: List<String>): String {
 
 ```ruby
 def solve(lines)
+  ""
 end
 ```
 
@@ -152,16 +225,36 @@ end
 
 ```python
 def solve(lines):
-
+  return ""
 ```
+
+* Java template:
+
+```java
+public class Solution {
+  public String solve(List<String> lines) {
+    return "";
+  }
+}
+```
+
+### Running Solutions
 
 Additionally, a solution can be run against all or an specific test case, and a problem can be run against all its solutions.
 This is done with the special action `run`: 
 
-* Run a problem against all solutions against all test cases: `problems run <problem-name>`.
-* Run a problem against all solutions against a test case: `problems run <problem-name> with <test-number>`.
-* Run a problem against a solution against all test cases `problems run solution <solution-number> for <problem-name>`.
-* Run a problem against a solution against a test case `problems run solution <solution-number> for <problem-name> with <test-number>`.
+```sh
+run 3N+1
+```
+
+A combination of tests and solutions can be specified:
+
+```sh
+run tests 1,2 of 3N+1 
+run tests 1,2 of 3N+1 using solutions 1,2
+run solutions 1,2 of 3N+1
+run solutions 1,2 of 3N+1 using tests 1,2
+```
 
 
 ## Development
