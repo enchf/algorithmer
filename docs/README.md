@@ -58,3 +58,100 @@ def self.resolve(action, *args)
   find_by(action) { |handler| handler.accept?(*args) }
 end
 ```
+
+## How the handlers are integrated
+
+The `bin/problems` executable calls an ActionFactory to determine the handler of the CLI command.
+As mentioned, ActionFactory is built registering the handlers or each of the entities of the gem.
+The entities are all elements present such as the project, problems, problem properties, test cases and solutions.
+
+Each handler inherits from a `Base` class, which allows to register actions.
+
+An action is encapsulated into a class called `Action`, which contains:
+
+* The handler class.
+* An action symbol referencing a method of the Handler class.
+* A set of validations on the arguments of the method.
+* An `accept?` method, returning true if the `*args` passed to the method are valid for the action.
+
+```ruby
+class Base
+  extend Toolcase::Registry
+
+  def self.action(name, &block)
+    # Action registering code.
+    handler = Action.new(self, name)
+    handler.instance_eval(validations)
+    handler.instance_eval(&block)
+    register handler, id: name, tag: :actions
+  end
+
+  def self.validations
+    # General validations from the handler class.
+  end
+
+  def self.validator(&block)
+    # Add a general validator
+  end
+end
+
+class Version < Base
+  action :version do
+    empty_args
+  end
+
+  def version
+    Problems::VERSION
+  end
+end
+
+class Project < Base
+  validator do
+    project_folder?
+  end
+
+  # more code here ...
+end
+```
+
+An action can be registered with validators using Toolcase `Registry`.
+And also validators are built using the `Toolcase::Registry` module.
+A validator is a class working as a tree of validators.
+Each validator can have sub-validations, for example, the `arguments` validator:
+
+```ruby
+arguments do
+  reserved_word :project
+  name /^[A-Za-z0-9-_]+$/
+end
+```
+
+This validator takes the arguments and each of the validators registered on it are applied to each of the arguments in order:
+`reserved_word` for the first argument, `name` for the second, and so on.
+
+A validator is also extended as a leaf of a tree, with child validators.
+
+```ruby
+class Validator
+  def self.name_alias(id)
+    @id ||= id
+  end
+
+  def valid?(*args)
+    # Specific validator code goes here
+  end
+end
+
+class LeafValidator < Validator
+  extend Toolcase::Registry
+
+  # Generic validation operation.
+  def valid?(*args)
+    validators.all? { |validator| validator.valid?(*args) }
+  end
+
+  def validators
+    # Registry of validators.
+  end
+end
+```
