@@ -40,8 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'terminal-table', '~> 3.0'
 
   # Runtime dependencies.
-  # spec.add_dependency "example-gem", "~> 1.0"
-
-  # For more information and examples about making a new gem, checkout our
-  # guide at: https://bundler.io/guides/creating_gem.html
+  spec.add_dependency "toolcase", "~> 0.2.0"
 end
