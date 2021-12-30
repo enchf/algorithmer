@@ -2,7 +2,6 @@
 
 require_relative "problems/version"
 
+# Main module
 module Problems
-  class Error < StandardError; end
-  # Your code goes here...
 end

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'problems/commands/action_factory'
+require 'problems/action_factory'
 
 action, *args = ARGV
-puts Commands::ActionFactory.resolve(action, *args)
+puts Problems::ActionFactory.resolve(action, *args)
