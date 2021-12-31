@@ -1,30 +1,25 @@
 # frozen_string_literal: true
 
 require 'toolcase'
+require_relative 'validator'
 
 module Problems
   # Abstraction of an executable action.
   class Action
-    include Toolcase::Registry
-
-    attr_reader :action, :handler
+    attr_reader :action, :handler, :root_validator
 
     def initialize(handler, action)
       @handler = handler
       @action = action
+      @root_validator = Validator.new
     end
 
     def execute(*args)
-      instance = handler.new
-      instance.send(action, *args)
+      handler.new.send(action, *args)
     end
 
     def accept?(*args)
-      validators.all? { |validator| validator.valid?(*args) }
-    end
-
-    def validators
-      registries
+      root_validator.valid?(*args)
     end
   end
 end
