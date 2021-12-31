@@ -7,12 +7,12 @@ module Problems
   class Validator
     include Toolcase::Registry
 
-    alias :registries, :children
-    alias :register, :add_child
+    alias children registries
+    alias add_child register
 
-    def initialize(and = true, &predicate)
-      @reductor = and ? :all? : :any?
+    def initialize(use_and: true, &predicate)
       @predicate = block_given? ? predicate : default_predicate
+      @reductor = use_and ? :all? : :any?
     end
 
     def valid?(*args)

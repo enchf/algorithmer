@@ -25,8 +25,9 @@ class ActionTest < Minitest::Test
   end
 
   def test_validations
-    @action.register SampleValidator.new
+    @action.root_validator.instance_eval do
+      add_child SampleValidator.new
+    end
     assert @action.accept?(1, 2)
-    assert_equal 1, @action.size
   end
 end

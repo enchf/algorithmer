@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'toolcase'
+require_relative 'validator'
 
 module Problems
   # Abstraction of an executable action.
