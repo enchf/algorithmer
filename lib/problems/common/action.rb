@@ -21,5 +21,9 @@ module Problems
     def accept?(*args)
       root_validator.valid?(*args)
     end
+
+    def add_validations(&block)
+      root_validator.instance_eval(&block)
+    end
   end
 end
