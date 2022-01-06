@@ -18,11 +18,11 @@ Style/SingleLineMethods:
 
 Lint/MissingSuper:
   Exclude:
-    - 'lib/problems/entities/**/*'
+    - 'lib/problems/old_entities/**/*'
 
 Metrics/AbcSize:
   Max: 20
 
 Metrics/ParameterLists:
   Exclude:
-    - 'lib/problems/entities/numbered_solution_for_test.rb'
+    - 'lib/problems/old_entities/numbered_solution_for_test.rb'
