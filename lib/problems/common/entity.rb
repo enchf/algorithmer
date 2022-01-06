@@ -18,7 +18,7 @@ module Problems
 
       def action(action_name, &block)
         handler = Action.new(self, action_name)
-        handler.add_validations(validations)
+        handler.add_validations(&validations)
         handler.add_validations(&block)
         register(handler, id: action_name)
       end

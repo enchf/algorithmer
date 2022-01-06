@@ -10,14 +10,9 @@ class ActionTest < Minitest::Test
     end
   end
 
-  class SampleValidator
-    def valid?(*args)
-      args.all? { |arg| arg.is_a? Numeric }
-    end
-  end
-
   def setup
     @action = Problems::Action.new(Handler, :run)
+    @validator = Problems::Validator.new { |*args| args.all? { |arg| arg.is_a? Numeric } }
   end
 
   def test_execution
@@ -25,8 +20,8 @@ class ActionTest < Minitest::Test
   end
 
   def test_validations
-    @action.root_validator.instance_eval do
-      add_child SampleValidator.new
+    @action.add_validations do
+      add_child @validator
     end
     assert @action.accept?(1, 2)
   end
