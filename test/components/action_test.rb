@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'problems/common/action'
+require 'problems/common/validator'
+require 'problems/components/action'
 
 class ActionTest < Minitest::Test
   class Handler
@@ -19,10 +20,8 @@ class ActionTest < Minitest::Test
     assert_equal 3, @action.execute(1, 2)
   end
 
-  def test_validations
-    @action.add_validations do
-      add_child @validator
-    end
+  def test_accept
+    @action.root_validator.add_child @validator
     assert @action.accept?(1, 2)
   end
 end
