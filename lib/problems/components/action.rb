@@ -7,6 +7,8 @@ require 'problems/components/context'
 module Problems
   # Abstraction of an executable action.
   class Action
+    DEFAULT_ARG_PROVIDER = proc { |*args| args }.freeze
+
     # Action generator through a builder pattern.
     class Builder
       def initialize(handler, action)
@@ -20,28 +22,26 @@ module Problems
       def empty_args
         reset do
           validations.add_child(Validator.new { |*args| args.empty? })
-          passed_arguments = []
+          @passed_arguments = []
         end
       end
 
       def arguments(&block)
         reset do
           input = ArgumentsValidator.new
-                                    .yield_self { |validator| validator.instance_eval(&block) }
+                                    .tap { |validator| validator.instance_eval(&block) }
                                     .children
-          
+
           args = input.select(&:argument?).each_with_index
-          context = Context.indexed(args.map { |arg, index| [index, arg.entity] }.to_h)
-          passed_arguments = args.map(&:last)
-          input.each_with_index
-               .map { |validator, index| IndexedValidator.new(validator, index).with_context(context) }
-               .each { |indexed_validator| validations.add_child(indexed_validator) }
+          @context = build_context
+          @passed_arguments = args.map(&:last)
+          build_validators
         end
       end
 
       def explicit(validators)
         reset do
-          passed_arguments = :all
+          @passed_arguments = :all
           validators.each { |validator| validations.add_child(validator) }
         end
       end
@@ -52,23 +52,33 @@ module Problems
 
       private
 
-      attr_accessor :validations, :passed_arguments, :context
+      attr_accessor :handler, :action, :validations, :passed_arguments, :context
 
       def argument_provider
-        return :itself.to_proc if passed_arguments == :all
+        return DEFAULT_ARG_PROVIDER if passed_arguments == :all
 
         proc { |*args| passed_arguments.map { |index| args[index] } }
       end
 
       def reset(&block)
         validations.clear
-        passed_arguments = :all
-        context = nil
-        yield_self { |it| it.instance_eval(&block) }
+        @passed_arguments = :all
+        @context = nil
+        tap { |it| it.instance_eval(&block) }
+      end
+
+      def build_context(args)
+        Context.indexed(args.map { |arg, index| [index, arg.entity] }.to_h)
+      end
+
+      def build_validators(input)
+        input.each_with_index
+             .map { |validator, index| IndexedValidator.new(validator, index).with_context(context) }
+             .each { |indexed_validator| validations.add_child(indexed_validator) }
       end
     end
 
-    def initialize(handler, action, validations, argument_provider, context
+    def initialize(handler, action, validations, argument_provider, context)
       @handler = handler
       @action = action
       @validations = validations
@@ -77,11 +87,12 @@ module Problems
     end
 
     def execute(*args)
-      handler.new.send(action, *argument_provider.call(*args)
+      arguments = @argument_provider.call(*args)
+      @handler.new.send(@action, *arguments)
     end
 
     def accept?(*args)
-      validations.valid?(*args)
+      @validations.valid?(*args)
     end
   end
 end

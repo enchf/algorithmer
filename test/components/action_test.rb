@@ -6,14 +6,17 @@ require 'problems/components/action'
 
 class ActionTest < Minitest::Test
   class Handler
-    def run(left, right)
+    def sum(left, right)
       left + right
     end
   end
 
   def setup
-    @action = Problems::Action.new(Handler, :run)
-    @validator = Problems::Validator.new { |*args| args.all? { |arg| arg.is_a? Numeric } }
+    @action = tested_class.new Handler,
+                               :sum,
+                               Problems::Validator.new.tap { |it| it.add_child(all_numeric) },
+                               tested_class::DEFAULT_ARG_PROVIDER,
+                               nil
   end
 
   def test_execution
@@ -21,7 +24,16 @@ class ActionTest < Minitest::Test
   end
 
   def test_accept
-    @action.root_validator.add_child @validator
     assert @action.accept?(1, 2)
+  end
+
+  private
+
+  def tested_class
+    Problems::Action
+  end
+
+  def all_numeric
+    Problems::Validator.new { |*args| args.all? { |arg| arg.is_a? Numeric } }
   end
 end

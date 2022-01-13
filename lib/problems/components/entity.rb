@@ -12,10 +12,10 @@ module Problems
       alias actions registries
 
       def action(action_name, &block)
-        Action.new(self, action_name).yield_self do |it|
-          it.instance_eval(&block)
-          register(it, id: action_name)
-        end
+        Action::Builder.new(self, action_name)
+                       .instance_eval(&block)
+                       .build
+                       .tap { |it| register(it, id: action_name) }
       end
     end
   end
