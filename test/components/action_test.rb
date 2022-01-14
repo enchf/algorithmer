@@ -13,11 +13,8 @@ class ActionTest < Minitest::Test
   end
 
   def setup
-    @action = tested_class.new Handler,
-                               :sum,
-                               Problems::Validator.new.tap { |it| it.add_child(all_numeric) },
-                               tested_class::DEFAULT_ARG_PROVIDER,
-                               nil
+    @action = tested_class.new Handler, :sum
+    @action.validations.add_child all_numeric
   end
 
   def test_execution
@@ -26,6 +23,7 @@ class ActionTest < Minitest::Test
 
   def test_accept
     assert @action.accept?(1, 2)
+    refute @action.accept?(1, '2')
   end
 
   private

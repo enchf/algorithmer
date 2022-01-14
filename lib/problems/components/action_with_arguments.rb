@@ -12,7 +12,7 @@ module Problems
 
     def initialize(handler, action, &block)
       super(handler, action)
-      
+
       @context = Context.new
       @arguments_context = Arguments.new
                                     .tap { |builder| builder.instance_eval(&block) unless block.nil? }
@@ -33,8 +33,8 @@ module Problems
 
     def build_validators
       @arguments_context.each_with_index
-         .map { |validator, index| IndexedValidator.new(validator, index, @context) }
-         .each { |indexed_validator| validations.add_child(indexed_validator) }
+                        .map { |validator, index| IndexedValidator.new(validator, index, @context) }
+                        .each { |indexed_validator| validations.add_child(indexed_validator) }
     end
   end
 end

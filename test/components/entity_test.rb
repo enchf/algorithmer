@@ -7,8 +7,8 @@ class EntityTest < Minitest::Test
   class TestEntity < Problems::Entity
     action :test do
       explicit do
-        add Problems::Validator.new { |*args| !args.empty? }
-        add Problems::Validator.new { |*args| args.all?(&:positive?) }
+        add(Problems::Validator.new { |*args| !args.empty? })
+        add(Problems::Validator.new { |*args| args.all?(&:positive?) })
       end
     end
 
