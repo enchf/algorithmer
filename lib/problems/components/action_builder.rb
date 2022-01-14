@@ -7,8 +7,14 @@ require_relative 'action_with_validators'
 module Problems
   # Action type abstract factory.
   class ActionBuilder
+    extend Toolcase::Registry
+
     def self.add(action_class, method_name)
-      send(:define_method, method_name) { |&block| action_class.new(@handler, @action, &block) }
+      register action_class, id: method_name
+
+      define_method(method_name) do |&block|
+        ActionBuilder[method_name].new(@handler, @action, &block)
+      end
     end
 
     add ActionWithoutArgs,    :empty_args
