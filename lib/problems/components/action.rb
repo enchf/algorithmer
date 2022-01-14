@@ -29,13 +29,13 @@ module Problems
       def arguments(&block)
         reset do
           input = ArgumentsValidator.new
-                                    .tap { |validator| validator.instance_eval(&block) }
+                                    .tap { |validator| validator.instance_eval(&block) unless block.nil? }
                                     .children
 
           args = input.select(&:argument?).each_with_index
-          @context = build_context
+          @context = build_context(args)
           @passed_arguments = args.map(&:last)
-          build_validators
+          build_validators(input)
         end
       end
 
@@ -68,7 +68,9 @@ module Problems
       end
 
       def build_context(args)
-        Context.indexed(args.map { |arg, index| [index, arg.entity] }.to_h)
+        Context::Builder.new.tap do |builder|
+          args.each { |arg, index| builder.property(arg.entity, index) }
+        end.build
       end
 
       def build_validators(input)
