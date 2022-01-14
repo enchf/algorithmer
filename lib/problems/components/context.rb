@@ -3,25 +3,19 @@
 module Problems
   # Action execution context.
   class Context
-    # Class for instructions to build context from args.
-    class Builder
-      def initialize
-        @map = {}
-      end
-
-      def property(entity, index)
-        tap { @map[index] = entity }
-      end
-
-      def build
-        Context.new(@map.map { |index, entity| [entity.name, proc { |*args| entity.fetch(args[index]) }] }.to_h)
-      end
+    def initialize
+      @properties = {}
     end
 
-    private
+    def property(entity, index)
+      @properties[index] = entity
+    end
 
-    def initialize(extractor)
-      @extractor = extractor
+    def build(*args)
+      @properties.sort_by(&:first).map do |index, _|
+        # TODO - Object to extract formal values of an entity
+        args[index]
+      end
     end
 
     def fetch(entity, args, default = nil)

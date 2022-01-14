@@ -6,8 +6,10 @@ require 'problems/components/entity'
 class EntityTest < Minitest::Test
   class TestEntity < Problems::Entity
     action :test do
-      explicit [Problems::Validator.new { |*args| !args.empty? },
-                Problems::Validator.new { |*args| args.all?(&:positive?) }]
+      explicit do
+        add Problems::Validator.new { |*args| !args.empty? }
+        add Problems::Validator.new { |*args| args.all?(&:positive?) }
+      end
     end
 
     def test(*numbers)
