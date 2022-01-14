@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'problems/common/validator'
+
 require 'problems/components/action'
+require 'problems/components/validator'
 
 class ActionTest < Minitest::Test
   class Handler

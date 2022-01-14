@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'problems/common/validator'
 require_relative 'action'
+require_relative 'validator'
 
 module Problems
   # An action without arguments
