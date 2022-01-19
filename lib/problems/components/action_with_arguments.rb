@@ -14,27 +14,13 @@ module Problems
       super(handler, action)
 
       @context = Context.new
-      @arguments_context = Arguments.new
-                                    .tap { |builder| builder.instance_eval(&block) unless block.nil? }
-
-      build_context
-      build_validators
+      @arguments_context = Arguments.new(&block)
+      @arguments_context.arguments.each { |arg, index| @context.property(index, arg.entity) }
+      @arguments_context.validators.each { |validator| validations.add_child(validator) }
     end
 
     def arguments(*args)
       @context.build(*args)
-    end
-
-    private
-
-    def build_context
-      @arguments_context.arguments { |arg, index| @context.property(index, arg.entity) }
-    end
-
-    def build_validators
-      @arguments_context.each_with_index
-                        .map { |validator, index| IndexedValidator.new(validator, index, @context) }
-                        .each { |indexed_validator| validations.add_child(indexed_validator) }
     end
   end
 end
