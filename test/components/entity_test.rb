@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-require 'problems/common/validator'
 require 'problems/components/entity'
+require 'problems/components/validator'
 
 class EntityTest < Minitest::Test
   class TestEntity < Problems::Entity
     action :test do
-      [
-        Problems::Validator.new { |*args| args.all?(&:positive?) },
-        Problems::Validator.new { |*args| !args.empty? }
-      ].each do |validator|
-        root_validator.add_child(validator)
+      explicit do
+        add(Problems::Validator.new { |*args| !args.empty? })
+        add(Problems::Validator.new { |*args| args.all?(&:positive?) })
       end
     end
 

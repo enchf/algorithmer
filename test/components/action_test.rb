@@ -1,19 +1,20 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'problems/common/validator'
+
 require 'problems/components/action'
+require 'problems/components/validator'
 
 class ActionTest < Minitest::Test
   class Handler
-    def run(left, right)
+    def sum(left, right)
       left + right
     end
   end
 
   def setup
-    @action = Problems::Action.new(Handler, :run)
-    @validator = Problems::Validator.new { |*args| args.all? { |arg| arg.is_a? Numeric } }
+    @action = tested_class.new Handler, :sum
+    @action.validations.add_child all_numeric
   end
 
   def test_execution
@@ -21,7 +22,17 @@ class ActionTest < Minitest::Test
   end
 
   def test_accept
-    @action.root_validator.add_child @validator
     assert @action.accept?(1, 2)
+    refute @action.accept?(1, '2')
+  end
+
+  private
+
+  def tested_class
+    Problems::Action
+  end
+
+  def all_numeric
+    Problems::Validator.new { |*args| args.all? { |arg| arg.is_a? Numeric } }
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'toolcase'
-require_relative 'action'
+require_relative 'action_builder'
 
 module Problems
   # Base entity handler.
@@ -12,10 +12,9 @@ module Problems
       alias actions registries
 
       def action(action_name, &block)
-        Action.new(self, action_name).yield_self do |it|
-          it.instance_eval(&block)
-          register(it, id: action_name)
-        end
+        ActionBuilder.new(self, action_name)
+                     .build(&block)
+                     .tap { |it| register(it, id: action_name) }
       end
     end
   end
