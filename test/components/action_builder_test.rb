@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'problems/components/action'
+require 'problems/components/action_builder'
 
 class ActionBuilderTest < Minitest::Test
-  OPERATIONS = %i[empty_args arguments explicit].freeze
+  ACTIONS = %i[empty_args arguments explicit].freeze
+  CLASSES = [Problems::ActionWithoutArgs,
+             Problems::ActionWithArguments,
+             Problems::ActionWithValidators].freeze
 
   class Handler
     def action; end
@@ -14,16 +17,22 @@ class ActionBuilderTest < Minitest::Test
     @builder = tested_class.new(Handler, :action)
   end
 
+  def test_respond_to
+    ACTIONS.each do |method|
+      assert_respond_to @builder, method
+    end
+  end
+
+  def test_build
+    ACTIONS.zip(CLASSES).each do |method, action_class|
+      action_class.expects(:new).once.returns(mock)
+      @builder.build { send(method) }
+    end
+  end
+
   private
 
   def tested_class
-    Problems::Action::Builder
-  end
-
-  def apply_random_states(max = 5)
-    OPERATIONS.zip(OPERATIONS.size.times.map { rand max })
-              .flat_map { |operation, repeats| repeats.times.map { operation } }
-              .shuffle
-              .each { |operation| @builder.send(operation) }
+    Problems::ActionBuilder
   end
 end

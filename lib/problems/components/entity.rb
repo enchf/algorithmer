@@ -13,7 +13,7 @@ module Problems
 
       def action(action_name, &block)
         ActionBuilder.new(self, action_name)
-                     .instance_eval(&block)
+                     .build(&block)
                      .tap { |it| register(it, id: action_name) }
       end
     end

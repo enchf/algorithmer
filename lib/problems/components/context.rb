@@ -17,9 +17,5 @@ module Problems
         args[index]
       end
     end
-
-    def fetch(entity, args, default = nil)
-      @extractor.fetch(entity, default).call(args)
-    end
   end
 end

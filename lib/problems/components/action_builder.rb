@@ -25,5 +25,9 @@ module Problems
       @handler = handler
       @action = action
     end
+
+    def build(&block)
+      instance_eval(&block)
+    end
   end
 end
