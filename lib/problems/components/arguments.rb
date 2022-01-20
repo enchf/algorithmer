@@ -9,9 +9,15 @@ module Problems
 
     alias validators registries
 
-    def keyword(name)
-      register_non_argument do |value|
+    def reserved_word(name)
+      validator argument: false do |value|
         name.to_s == value
+      end
+    end
+
+    def format(regexp)
+      validator do |value|
+        regexp.match?(value)
       end
     end
 
@@ -25,17 +31,8 @@ module Problems
 
     private
 
-    def register_argument(&block)
-      add_validator(:arguments, &block)
-    end
-
-    def register_non_argument(&block)
-      add_validator(&block)
-    end
-
-    def add_validator(tag = nil, &block)
-      validator = IndexedValidator.new(size, &block)
-      register validator, tag: tag
+    def validator(argument: true, &block)
+      register IndexedValidator.new(size, &block), tag: argument ? :argument : nil
     end
   end
 end
