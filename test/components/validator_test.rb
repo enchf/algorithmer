@@ -8,7 +8,6 @@ class ValidatorTest < Minitest::Test
   def setup
     @validator = tested_class.new
     @validator_with_predicate = tested_class.new { |*args| !args.empty? }
-    @or_validator = tested_class.new(use_and: false)
   end
 
   def test_children
@@ -47,13 +46,6 @@ class ValidatorTest < Minitest::Test
   def test_default_predicate
     assert @validator.valid?
     assert @validator.valid?(1, 2, 3)
-  end
-
-  def test_or_validator
-    [1, 2, 3].map { |num| tested_class.new { |*args| args.first == num } }
-             .each { |validator| @or_validator.add_child validator }
-    [1, 2, 3].each { |num| assert @or_validator.valid?(num, 5, 6) }
-    refute @or_validator.valid?(0, 1)
   end
 
   def tested_class

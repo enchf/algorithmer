@@ -7,27 +7,53 @@ module Problems
   class Validator
     include Toolcase::Registry
 
-    attr_accessor :predicate, :reductor
+    attr_accessor :predicate, :arguments, :reductor
 
     alias children registries
     alias add_child register
 
-    def initialize(use_and: true, &predicate)
-      @predicate = block_given? ? predicate : default_predicate
-      @reductor = use_and ? :all? : :any?
+    def initialize(reductor: :all?,
+                   arguments: Validator.all_arguments,
+                   entity: nil,
+                   &predicate)
+      @predicate = block_given? ? predicate : Validator.default_predicate
+      @arguments = arguments
+      @reductor = reductor
+      @entity = entity
     end
 
     def valid?(*args)
-      final_args = arguments(*args)
-      @predicate.call(*final_args) && children.send(@reductor) { |child| child.valid?(*final_args) }
+      final_args = arguments.call(*args)
+      predicate.call(*final_args) && children.send(reductor) { |child| child.valid?(*args) }
     end
 
-    def default_predicate
-      proc { |*_| true }
+    def evaluate(&block)
+      tap { |it| it.instance_eval(&block) }
     end
 
-    def arguments(*args)
-      args
+    class << self
+      # Reductors
+      def any
+        :any?
+      end
+
+      def all
+        :all?
+      end
+
+      # Argument providers
+      def all_arguments
+        proc { |*args| args }
+      end
+
+      def indexed_argument(index)
+        proc { |*args| [args[index]] }
+      end
+
+      # Predicates
+      def default_predicate
+        proc { |*_| true }
+      end
     end
   end
 end

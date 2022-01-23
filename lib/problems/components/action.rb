@@ -5,12 +5,9 @@ require_relative 'validator'
 module Problems
   # Abstraction of an executable action.
   class Action
-    attr_accessor :validations
-
     def initialize(handler, action)
       @handler = handler
       @action = action
-      @validations = Validator.new
     end
 
     def execute(*args)
@@ -18,11 +15,15 @@ module Problems
     end
 
     def accept?(*args)
-      @validations.valid?(*args)
+      validations.valid?(*args)
     end
 
     def arguments(*args)
       args
+    end
+
+    def validations
+      @validations ||= Validator.new
     end
   end
 end
