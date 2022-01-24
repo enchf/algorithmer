@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'problems/components/entity'
-require 'problems/components/validator'
+require 'problems/validation/validator'
 
 class EntityTest < Minitest::Test
   class TestEntity < Problems::Entity

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'validator'
+require 'problems/validation/validator'
 
 module Problems
   # Abstraction of an executable action.

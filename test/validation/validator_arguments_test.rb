@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-require 'problems/components/validator'
+require 'problems/validation/validator'
 
 class ValidatorArgumentsTest < Minitest::Test
   def setup; end

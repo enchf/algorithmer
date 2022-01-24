@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-require 'problems/components/validator'
+require 'problems/validation/validator'
 
 class ValidatorEvalTest < Minitest::Test
   def test_add_child_validator_in_block
