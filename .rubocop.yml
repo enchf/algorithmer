@@ -26,3 +26,11 @@ Metrics/AbcSize:
 Metrics/ParameterLists:
   Exclude:
     - 'lib/problems/old_entities/numbered_solution_for_test.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'test/components/action_with_arguments_test.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/components/action_with_arguments_test.rb'

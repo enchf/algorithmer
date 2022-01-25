@@ -7,7 +7,7 @@ module Problems
   class Validator
     include Toolcase::Registry
 
-    attr_accessor :predicate, :arguments, :reductor
+    attr_accessor :predicate, :arguments, :reductor, :entity
 
     alias children registries
     alias add_child register

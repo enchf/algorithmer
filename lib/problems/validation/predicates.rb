@@ -19,9 +19,8 @@ module Problems
     end
 
     def optional(**config, &block)
-      config[:reductor] = Validator.any
-      Predicates.block_as_validator(**config) do
-        add_child Predicates.predicate_as_validator(**config, &:nil?)
+      any(**config) do
+        add_child Predicates.predicate_as_validator(**config) { |*args| args.nil? || args.empty? }
         add_child Predicates.block_as_validator(**config, &block)
       end
     end
@@ -44,7 +43,7 @@ module Problems
       executor = Object.new.extend(Predicates)
       Validator.define_method(method) do |*args, **new_config, &block|
         final_config = config.merge(new_config)
-        add_child executor.send(*args, **final_config, &block)
+        add_child executor.send(method, *args, **final_config, &block)
       end
     end
   end
