@@ -20,6 +20,18 @@ class ActionWithArgumentsTest < Minitest::Test
     end
   end
 
+  def test_next_index; end
+
+  def test_varargs; end
+
+  def test_reserved_word; end
+
+  def test_format; end
+
+  def test_any; end
+
+  def test_optional; end
+
   private
 
   def initialize_tested_class(&block)
