@@ -31,6 +31,10 @@ module Problems
       tap { |it| it.instance_eval(&block) }
     end
 
+    def config
+      { reductor: reductor, arguments: arguments, entity: entity }
+    end
+
     class << self
       # Reductors
       def any
@@ -48,6 +52,10 @@ module Problems
 
       def indexed_argument(index)
         proc { |*args| [args[index]] }
+      end
+
+      def tail(start_index)
+        proc { |*args| args.drop(start_index) }
       end
 
       # Predicates
