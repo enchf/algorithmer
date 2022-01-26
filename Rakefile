@@ -18,4 +18,4 @@ Rake::TestTask.new(:integration) do |t|
   t.test_files = ['integration/commands_test.rb']
 end
 
-task default: %i[test rubocop]
+task default: %i[test integration rubocop]

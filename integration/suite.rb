@@ -64,7 +64,7 @@ class Suite
   end
 
   def fetch_as_array(config, property)
-    value = config.fetch(property, [])
+    value = config.fetch(property, [''])
     value.is_a?(Array) ? value : [value]
   end
 end

@@ -40,5 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'terminal-table', '~> 3.0'
 
   # Runtime dependencies.
-  spec.add_dependency "toolcase", "~> 0.3.0"
+  spec.add_dependency "toolcase", "~> 0.4.0"
 end

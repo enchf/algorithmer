@@ -13,6 +13,10 @@ module Problems
       end
     end
 
+    class << self
+      alias registered_actions tags
+    end
+
     def self.resolve(action, *args)
       # TODO: Remove null-safe operation when default handler is registered.
       find_by(action) { |handler| handler.accept?(*args) }&.execute(*args)

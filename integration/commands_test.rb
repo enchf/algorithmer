@@ -30,7 +30,8 @@ class CommandsTest
   private
 
   def suites
-    Dir.children(suites_path).map { |file| File.join(suites_path, file) }
+    # TODO: Integrate all suites with `Dir.children(suites_path)`
+    %w[general.yaml].map { |file| File.join(suites_path, file) }
   end
 
   def load_suite(suite)

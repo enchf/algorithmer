@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'problems/commands/entities/base'
+require 'problems/action_factory'
 require_relative 'executable'
 
 # Abstraction of a single command execution with arguments.
@@ -66,7 +66,7 @@ class Execution
   end
 
   def validate_action
-    raise "Action #{@action} is invalid" unless ::Commands::Base::ACTIONS.include?(@action)
+    raise "Action #{@action} is invalid" unless ::Problems::ActionFactory.registered_actions.include?(@action)
   end
 
   def printable(string, width = DEFAULT_WIDTH, rows = DEFAULT_ROWS)
