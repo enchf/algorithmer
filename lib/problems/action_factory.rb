@@ -2,6 +2,7 @@
 
 require 'toolcase'
 
+require 'problems/entities/invalid'
 require 'problems/entities/version'
 
 module Problems
@@ -12,6 +13,10 @@ module Problems
     def self.add(handler)
       handler.actions.each do |action|
         register action, tag: action.name
+
+        # Register invalid action.
+        id = "#{action}_default"
+        register Action.new(Invalid, action.name), tag: action.name, id: id if ActionFactory[id].nil?
       end
     end
 
@@ -22,8 +27,10 @@ module Problems
     add Version
 
     def self.resolve(action, *args)
-      # TODO: Remove null-safe operation when default handler is registered.
-      find_by(action.to_sym) { |handler| handler.accept?(*args) }&.execute(*args)
+      action = action&.to_sym
+      return "Action '#{action}' is not defined" unless registered_actions.include?(action)
+
+      find_by(action) { |handler| handler.accept?(*args) }.execute(*args)
     end
   end
 end

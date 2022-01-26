@@ -16,7 +16,7 @@ class Match < Base
   end
 
   def match?(value)
-    value.match?(match_string)
+    Regexp.new(match_string).match?(value)
   end
 
   def expected

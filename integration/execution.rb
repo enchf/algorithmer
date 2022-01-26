@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'problems/action_factory'
 require_relative 'executable'
 
 # Abstraction of a single command execution with arguments.
@@ -57,16 +56,11 @@ class Execution
   end
 
   def execute
-    validate_action
     @execution_result = `#{command}`.strip
     self.success = validator.match?(@execution_result)
   rescue StandardError => e
     @execution_result = e.message
     self.success = false
-  end
-
-  def validate_action
-    raise "Action #{@action} is invalid" unless ::Problems::ActionFactory.registered_actions.include?(@action.to_sym)
   end
 
   def printable(string, width = DEFAULT_WIDTH, rows = DEFAULT_ROWS)
