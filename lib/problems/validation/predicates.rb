@@ -5,6 +5,8 @@ require_relative 'validator'
 module Problems
   # Pre-defined predicates for validators
   module Predicates
+    EXECUTOR = Object.new.extend(Predicates)
+
     def reserved_word(word, **config)
       Predicates.predicate_as_validator(**config) { |value| word.to_s == value.to_s }
     end
@@ -41,10 +43,9 @@ module Problems
 
     # Integrate to Validator
     all.each do |method|
-      executor = Object.new.extend(Predicates)
       Validator.define_method(method) do |*args, **new_config, &block|
         final_config = config.merge(new_config)
-        add_child executor.send(method, *args, **final_config, &block)
+        add_child EXECUTOR.send(method, *args, **final_config, &block)
       end
     end
   end

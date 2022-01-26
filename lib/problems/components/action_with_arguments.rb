@@ -8,7 +8,7 @@ require_relative 'context'
 module Problems
   # An Action with arguments refering to an entity context.
   class ActionWithArguments < Action
-    NON_ARGUMENT_PREDICATES = %i[reserved_word].freeze
+    EXCLUDE_FROM_ARGUMENTS = %i[reserved_word].freeze
 
     def initialize(handler, action, &block)
       super(handler, action)
@@ -35,9 +35,7 @@ module Problems
 
     def argument_validators
       all_validators.each_with_index
-                    .zip(validator_types)
-                    .reject { |_, type| NON_ARGUMENT_PREDICATES.include?(type) }
-                    .map(&:first)
+                    .select { |instance, _| validations.children(:argument).include?(instance) }
     end
 
     def size_valid?(size)
@@ -77,10 +75,9 @@ module Problems
 
     # Integrate predicates to validate arguments
     Predicates.all.each do |method|
-      executor = Object.new.extend(Predicates)
       define_method(method) do |*args, **config, &block|
-        validator = executor.send(method, *args, **config, &block)
-        argument = !NON_ARGUMENT_PREDICATES.include?(method)
+        validator = Predicates::EXECUTOR.send(method, *args, **config, &block)
+        argument = !EXCLUDE_FROM_ARGUMENTS.include?(method)
         add_validator(validator, argument: argument, type: method)
       end
     end
@@ -88,8 +85,8 @@ module Problems
     def add_validator(validator, argument: true, type: :custom)
       validator.arguments = Validator.indexed_argument(next_index)
       tag = argument ? :argument : nil
-      validations.add_child(validator, tag: tag)
       validator_types << type
+      validations.add_child(validator, tag: tag)
     end
 
     private
