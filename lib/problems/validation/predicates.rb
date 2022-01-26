@@ -15,6 +15,7 @@ module Problems
 
     def any(**config, &block)
       config[:reductor] = Validator.any
+      config[:arguments] ||= Validator.default_arguments
       Predicates.block_as_validator(**config, &block)
     end
 
