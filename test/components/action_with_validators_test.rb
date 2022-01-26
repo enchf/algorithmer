@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'problems/components/validator'
+require 'problems/validation/validator'
 require 'problems/components/action_with_validators'
 
 class ActionWithValidatorsTest < Minitest::Test

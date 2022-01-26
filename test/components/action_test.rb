@@ -3,7 +3,7 @@
 require 'test_helper'
 
 require 'problems/components/action'
-require 'problems/components/validator'
+require 'problems/validation/validator'
 
 class ActionTest < Minitest::Test
   class Handler
