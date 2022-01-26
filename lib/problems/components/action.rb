@@ -5,9 +5,12 @@ require 'problems/validation/validator'
 module Problems
   # Abstraction of an executable action.
   class Action
+    attr_reader :name
+
     def initialize(handler, action)
       @handler = handler
       @action = action
+      @name = action
     end
 
     def execute(*args)

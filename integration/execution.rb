@@ -66,7 +66,7 @@ class Execution
   end
 
   def validate_action
-    raise "Action #{@action} is invalid" unless ::Problems::ActionFactory.registered_actions.include?(@action)
+    raise "Action #{@action} is invalid" unless ::Problems::ActionFactory.registered_actions.include?(@action.to_sym)
   end
 
   def printable(string, width = DEFAULT_WIDTH, rows = DEFAULT_ROWS)
