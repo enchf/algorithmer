@@ -19,6 +19,7 @@ Style/SingleLineMethods:
 Lint/MissingSuper:
   Exclude:
     - 'lib/problems/old_entities/**/*'
+    - 'lib/problems/entities/invalid.rb'
 
 Metrics/AbcSize:
   Max: 20

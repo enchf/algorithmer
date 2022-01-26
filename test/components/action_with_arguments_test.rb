@@ -13,7 +13,7 @@ class ActionWithArgumentsTest < Minitest::Test
     argument = validator_mock
     argument.stubs(:entity).returns(:project)
 
-    @context.expects(:property).with(0, :project).once
+    @context.expects(:property).with(:project, 0).once
 
     initialize_tested_class do
       add_validator argument
@@ -21,7 +21,8 @@ class ActionWithArgumentsTest < Minitest::Test
   end
 
   def test_next_index
-    validator = validator_mock
+    mock_context
+    validator = validator_mock(:entity)
     action = initialize_tested_class do
       add_validator validator, argument: false
       add_validator validator

@@ -14,7 +14,7 @@ module Problems
       super(handler, action)
 
       instance_eval(&block)
-      argument_validators.each_with_index { |arg, index| context.property(index, arg.entity) }
+      argument_validators.each { |instance, index| context.property(instance.entity, index) }
     end
 
     def context
@@ -25,16 +25,19 @@ module Problems
       @context.build(*args)
     end
 
-    def argument_validators
-      validations.children(:argument)
-    end
-
     def next_index
       validations.size
     end
 
     def all_validators
       validations.children
+    end
+
+    def argument_validators
+      all_validators.each_with_index
+                    .zip(validator_types)
+                    .reject { |_, type| NON_ARGUMENT_PREDICATES.include?(type) }
+                    .map(&:first)
     end
 
     def size_valid?(size)
@@ -59,13 +62,15 @@ module Problems
     # Methods to add validators to arguments
 
     def varargs(**config, &block)
-      @varargs = true
       config[:arguments] = Validator.tail(next_index)
+
       config_per_argument = config.clone.tap { |cfg| cfg[:arguments] = Validator.indexed_argument(0) }
       validator_per_argument = Validator.new(**config_per_argument).evaluate(&block)
+
       validator = Validator.new(**config) do |*args|
         args.all? { |argument| validator_per_argument.valid?(argument) }
       end
+
       validations.add_child(validator)
       validator_types << :varargs
     end

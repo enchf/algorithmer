@@ -4,6 +4,7 @@ require 'toolcase'
 
 require 'problems/entities/invalid'
 require 'problems/entities/version'
+require 'problems/entities/project'
 
 module Problems
   # Action resolver.
@@ -25,6 +26,7 @@ module Problems
     end
 
     add Version
+    add Project
 
     def self.resolve(action, *args)
       action = action&.to_sym
