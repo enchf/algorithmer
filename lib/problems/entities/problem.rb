@@ -18,6 +18,7 @@ module Problems
 
       def valid_problem?(**config)
         Predicates.block_as_validator(**config) do
+          non_reserved_word
           format PROBLEM_NAME
           problem_exists?
         end

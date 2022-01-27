@@ -25,11 +25,9 @@ module Problems
     def valid?(*args)
       final_args = arguments.call(*args)
       valid_predicate = predicate.call(*final_args)
-      valid_children = children.empty? || children.send(reductor) do |child|
+      valid_predicate && (children.empty? || children.send(reductor) do |child|
         child.valid?(*args)
-      end
-
-      valid_predicate && valid_children
+      end)
     end
 
     def evaluate(&block)
