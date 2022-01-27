@@ -77,6 +77,16 @@ class ActionWithArgumentsTest < Minitest::Test
     refute action.accept?('')
   end
 
+  def test_non_reserved_word
+    mock_context
+    initialize_tested_class { reserved_word :test_word }
+    action = initialize_tested_class { non_reserved_word }
+
+    assert action.accept?('a_word')
+    refute action.accept?('test_word')
+    refute action.accept?(:test_word)
+  end
+
   def test_any
     mock_context
     one, two, three = equal_validators(1, 2, 3)

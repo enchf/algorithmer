@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'problems/components/action_with_arguments'
+
+require_relative 'reserved_words'
 require_relative 'validator'
 
 module Problems
@@ -9,11 +11,16 @@ module Problems
     EXECUTOR = Object.new.extend(Predicates)
 
     def reserved_word(word, **config)
+      ReservedWords.instance.register word
       Predicates.predicate_as_validator(**config) { |value| word.to_s == value.to_s }
     end
 
     def format(regex, **config)
       Predicates.predicate_as_validator(**config) { |value| regex.match?(value.to_s) }
+    end
+
+    def non_reserved_word(**config)
+      Predicates.predicate_as_validator(**config) { |value| !ReservedWords.instance.include?(value.to_sym) }
     end
 
     def any(**config, &block)

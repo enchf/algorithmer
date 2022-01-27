@@ -4,22 +4,31 @@ require 'test_helper'
 
 class PredicatesIntegrationTest < Minitest::Test
   def test_reserved_word
-    instance = validator.new.evaluate { reserved_word :word }
+    instance = validator_instance { reserved_word :word }
 
     assert instance.valid?(:word)
     refute instance.valid?(:sword)
   end
 
   def test_format
-    instance = validator.new.evaluate { format(/^[A-Z]+$/) }
+    instance = validator_instance { format(/^[A-Z]+$/) }
 
     assert instance.valid?('UPPER')
     refute instance.valid?('Camel')
     refute instance.valid?('snake')
   end
 
+  def test_non_reserved_word
+    validator_instance { reserved_word :test_word }
+    instance = validator_instance { non_reserved_word }
+
+    assert instance.valid?('a_word')
+    refute instance.valid?('test_word')
+    refute instance.valid?(:test_word)
+  end
+
   def test_any
-    instance = validator.new.evaluate do
+    instance = validator_instance do
       any do
         reserved_word :word
         format(/^[A-Z]+$/)
@@ -31,7 +40,7 @@ class PredicatesIntegrationTest < Minitest::Test
   end
 
   def test_optional
-    instance = validator.new.evaluate do
+    instance = validator_instance do
       optional { reserved_word :word }
     end
 
@@ -42,5 +51,9 @@ class PredicatesIntegrationTest < Minitest::Test
 
   def validator
     Problems::Validator
+  end
+
+  def validator_instance(&block)
+    validator.new.evaluate(&block)
   end
 end
