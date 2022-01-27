@@ -6,7 +6,7 @@ require_relative 'context'
 module Problems
   # An Action with arguments refering to an entity context.
   class ActionWithArguments < Action
-    EXCLUDE_FROM_ARGUMENTS = %i[reserved_word].freeze
+    EXCLUDE_FROM_ARGUMENTS = %i[reserved_word empty_args].freeze
 
     def initialize(handler, action, &block)
       super(handler, action)
@@ -20,7 +20,7 @@ module Problems
     end
 
     def arguments(*args)
-      @context.build(*args)
+      context.build(*args)
     end
 
     def next_index
@@ -36,7 +36,9 @@ module Problems
                     .select { |instance, _| validations.children(:argument).include?(instance) }
     end
 
-    def size_valid?(size)
+    def arity
+      return 0..0 if validator_types.include?(:empty_args)
+
       min = 0
       max = 0
 
@@ -45,30 +47,32 @@ module Problems
         max = type == :varargs ? Float::INFINITY : max + 1
       end
 
-      size >= min && size <= max
+      min..max
+    end
+
+    def size_valid?(args)
+      arity.include?(args.size)
     end
 
     def validations
       action = self
       @validations ||= Validator.new do |*args|
-        action.size_valid?(args.size)
+        action.size_valid?(args)
       end
     end
 
     # Methods to add validators to arguments
 
     def varargs(**config, &block)
-      config[:arguments] = Validator.tail(next_index)
-
-      config_per_argument = config.clone.tap { |cfg| cfg[:arguments] = Validator.indexed_argument(0) }
-      validator_per_argument = Validator.new(**config_per_argument).evaluate(&block)
-
-      validator = Validator.new(**config) do |*args|
-        args.all? { |argument| validator_per_argument.valid?(argument) }
-      end
-
-      validations.add_child(validator)
+      validator = Predicates::EXECUTOR.varargs(next_index, **config, &block)
+      validations.add_child(validator, tag: :argument)
       validator_types << :varargs
+    end
+
+    def empty_args(**config)
+      validator = Predicates::EXECUTOR.empty_args(**config)
+      validations.add_child(validator)
+      validator_types << :empty_args
     end
 
     def add_validator(validator, argument: true, type: :custom)

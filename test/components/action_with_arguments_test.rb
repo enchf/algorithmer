@@ -120,6 +120,28 @@ class ActionWithArgumentsTest < Minitest::Test
     refute action.accept?(1, 2)
   end
 
+  def test_all
+    mock_context
+    instance = initialize_tested_class do
+      all do
+        custom { |val| val.positive? }
+        custom { |val| val < 10 }
+      end
+    end
+
+    (1..9).each { |num| assert instance.accept?(num) }
+    [-1, 0, 10, 11].each { |num| refute instance.accept?(num) }
+    refute instance.accept?(1, 10)
+  end
+
+  def test_empty_args
+    mock_context
+    action = initialize_tested_class { empty_args }
+    assert action.accept?
+    refute action.accept?(1)
+    refute action.accept?(1, 2, 3)
+  end
+
   private
 
   def initialize_tested_class(&block)

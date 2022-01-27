@@ -29,6 +29,31 @@ module Problems
       Predicates.block_as_validator(**config, &block)
     end
 
+    def all(**config, &block)
+      config[:reductor] = Validator.all
+      config[:arguments] ||= Validator.default_arguments
+      Predicates.block_as_validator(**config, &block)
+    end
+
+    def empty_args(**config)
+      config[:arguments] = Validator.default_arguments
+      Predicates.predicate_as_validator(**config) { |*args| args.nil? || args.empty? }
+    end
+
+    def custom(**config, &block)
+      Predicates.predicate_as_validator(**config, &block)
+    end
+
+    def varargs(start = 0, **config, &block)
+      config[:arguments] = Validator.tail(start)
+      config_per_argument = config.clone.tap { |cfg| cfg[:arguments] = Validator.indexed_argument(0) }
+      validator_per_argument = Validator.new(**config_per_argument).evaluate(&block)
+
+      Predicates.predicate_as_validator(**config) do |*args|
+        args.all? { |argument| validator_per_argument.valid?(argument) }
+      end
+    end
+
     def optional(**config, &block)
       any(**config) do
         add_child Predicates.predicate_as_validator(**config) { |*args| args.nil? || args.empty? }

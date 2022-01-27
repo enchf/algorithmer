@@ -39,6 +39,25 @@ class PredicatesIntegrationTest < Minitest::Test
     [:sword, 'Camel', 'snake'].each { |value| refute instance.valid?(value) }
   end
 
+  def test_all
+    instance = validator_instance do
+      all do
+        custom { |val| val.positive? }
+        custom { |val| val < 10 }
+      end
+    end
+
+    (1..9).each { |num| assert instance.valid?(num) }
+    [-1, 0, 10, 11].each { |num| refute instance.valid?(num) }
+  end
+
+  def test_empty_args
+    instance = validator_instance { empty_args }
+    assert instance.valid?
+    refute instance.valid?(1)
+    refute instance.valid?(1, 2, 3)
+  end
+
   def test_optional
     instance = validator_instance do
       optional { reserved_word :word }

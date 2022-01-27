@@ -2,12 +2,16 @@ name: 'Problems CRD'
 tests:
   - name: 'Test valid problem names'
     action: 'add'
-    args: ['startsWithLower', 'StartWithUppercase', 'Contain1Numbers2', 'Special-Chars_', '1StartWithNumber']
+    args: ['startsWithLower', 'StartWithUppercase', 'Contain1Numbers2', 'Special-Chars_', '1StartWithNumber', '-startWithValidChar']
     expects:
       match: 'Problem (.+) added to project'
   - name: 'Test invalid problem names'
     action: 'add'
-    args: ['-startWithChar', 'Invalid@Chars', 'Have Spaces']
+    args: ['Invalid@Chars', 'Have Spaces']
+    expects: INVALID_ARGS
+  - name: 'Problems with keywords as names'
+    action: 'add'
+    args: ['project', 'by'] # ['tag', 'title', 'description', 'url', 'test', 'solution ', 'for', 'with']
     expects: INVALID_ARGS
   - name: 'Add a problem'
     action: 'add'
@@ -16,24 +20,16 @@ tests:
   - name: 'Show a problem'
     action: 'show'
     args: 'Problem'
-    expects: 'Show problem #{problem} details'
+    expects: 'Show problem Problem details'
   - name: 'Remove a problem'
     action: 'remove'
     args: 'Problem'
     expects: 'After confirmation, problem Problem is removed from project'
   - name: 'List all problems'
     action: 'list'
-    expects: 'List all problems'
+    expects: 'List all problems using the following filters: '
   - name: 'Problem search'
     action: 'list'
     args: ['by "#some" "#tags"', "by 'search-term'", "by '#search' 'combined' with '#tags'"]
     expects:
-      match: '^List the problems that meet the following filters: (.*)$'
-  - name: 'Problems with keywords as names'
-    action: 'add'
-    args: ['project'] # ['tag', 'title', 'description', 'url', 'by', 'test', 'solution ', 'for', 'with']
-    expects: INVALID_ARGS
-  - name: 'Problems filters cannot be empty'
-    action: 'list'
-    args: 'by'
-    expects: INVALID_ARGS
+      match: "List all problems using the following filters: '(.+)'$"

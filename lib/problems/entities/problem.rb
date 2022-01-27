@@ -6,7 +6,10 @@ require 'problems/validation/predicates'
 module Problems
   # Abstraction that represents a problem management & execution.
   class Problem < Entity
-    PROBLEM_NAME = /^[A-Za-z0-9+-_]+$/.freeze
+    PROBLEM_NAME = /^[A-Za-z0-9+_-]+$/.freeze
+    QUOTED = /^'[A-Za-z0-9\/\*\.\(\)\[\]\{\}\+ _-]+'$/.freeze
+    WORD_FILTER = /^[A-Za-z0-9\/\*\.\(\)\[\]\{\}\+_-]+$/.freeze
+    TAG = /^#[a-z]+$/.freeze
 
     Predicates.update_dsl! do
       def problem_exists?(**config)
@@ -38,7 +41,21 @@ module Problems
     end
 
     action :list do
-      empty_args
+      arguments do
+        any do
+          empty_args
+          all do
+            reserved_word :by
+            varargs do
+              any do
+                format QUOTED
+                format WORD_FILTER
+                format TAG
+              end
+            end
+          end
+        end
+      end
     end
 
     def add(problem)
@@ -58,8 +75,8 @@ module Problems
       "All solutions for problem #{problem} executed against all test cases"
     end
 
-    def list
-      'List all problems'
+    def list(*filters)
+      "List all problems using the following filters: '#{filters.join(", ")}'"
     end
   end
 end

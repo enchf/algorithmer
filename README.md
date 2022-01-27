@@ -75,14 +75,15 @@ list by filter '#tag' 'text with spaces'
 ```
 
 * The form without arguments will list all problems in the project.
-* The `list by` form accepts filters such as text and tags.
+* It also accepts filters such as text and tags with the form `list by`.
 * Text can be a word and be without quotes.
 * A tag should be within quotes and starts with the # sign to differentiate them from the text filters.
 * Tags can only contain underscore letters.
 * Remember to use quotes in tags otherwise bash will interpret them as comments.
-* Text can be placed within single or double quotes, and contain spaces or other characters.
+* Text can be placed within single or double quotes in order to contain spaces.
 * Text is used to lookup in the problem title and description.
 * All the filters will work as an AND operator.
+* Valid chars in filters are: numbers, upper/lower letters, operators and signs: +-/*._()[]{}.
 
 
 ### Problem Properties
