@@ -4,7 +4,7 @@ tests:
     action: 'add'
     args: ['startsWithLower', 'StartWithUppercase', 'Contain1Numbers2', 'Special-Chars_', '1StartWithNumber']
     expects:
-      match: 'A problem with id (.+) will be added to the project'
+      match: 'Problem (.+) added to project'
   - name: 'Test invalid problem names'
     action: 'add'
     args: ['-startWithChar', 'Invalid@Chars', 'Have Spaces']
@@ -12,15 +12,15 @@ tests:
   - name: 'Add a problem'
     action: 'add'
     args: 'Problem'
-    expects: 'A problem with id Problem will be added to the project'
+    expects: 'Problem Problem added to project'
   - name: 'Show a problem'
     action: 'show'
     args: 'Problem'
-    expects: 'Show the details of problem Problem'
+    expects: 'Show problem #{problem} details'
   - name: 'Remove a problem'
     action: 'remove'
     args: 'Problem'
-    expects: 'After asking for confirmation, problem Problem will be deleted'
+    expects: 'After confirmation, problem Problem is removed from project'
   - name: 'List all problems'
     action: 'list'
     expects: 'List all problems'

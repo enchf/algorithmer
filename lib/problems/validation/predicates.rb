@@ -78,6 +78,11 @@ module Problems
         build_validator_dsl!
         build_action_dsl!
       end
+
+      def update_dsl!(&block)
+        module_eval(&block)
+        build_dsl!
+      end
     end
 
     build_dsl!

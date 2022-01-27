@@ -4,7 +4,7 @@ tests:
     action: version
     expects: VERSION
   - name: 'Actions without args'
-    action: ['add', 'edit', 'remove', 'show', 'list', 'init', 'run']
+    action: ['add', 'edit', 'remove', 'show', 'init', 'run']
     expects: UNIMPLEMENTED
   - name: 'Init Project'
     action: init

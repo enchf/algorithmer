@@ -11,10 +11,12 @@ module Problems
     class << self
       alias actions registries
 
-      def action(action_name, &block)
-        ActionBuilder.new(self, action_name)
-                     .build(&block)
-                     .tap { |it| register(it, id: action_name) }
+      def action(*action_names, &block)
+        action_names.each do |action_name|
+          ActionBuilder.new(self, action_name)
+                       .build(&block)
+                       .tap { |it| register(it, id: action_name) }
+        end
       end
     end
   end
