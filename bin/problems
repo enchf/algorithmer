@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'byebug'
-require 'problems/action_factory'
+require 'problems'
 
 action, *args = ARGV
 puts Problems::ActionFactory.resolve(action, *args)

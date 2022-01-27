@@ -23,7 +23,7 @@ module Utils
     Terminal::Table.new(config).to_s
   end
 
-  def print_banner(text, font = 'roman')
+  def print_banner(text, font = 'rectangles')
     puts "\n#{Artii::Base.new(font: font).asciify(text)}"
     puts "\n"
   end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'problems/validation/predicates'
-
 require_relative 'action'
 require_relative 'context'
 
@@ -71,15 +69,6 @@ module Problems
 
       validations.add_child(validator)
       validator_types << :varargs
-    end
-
-    # Integrate predicates to validate arguments
-    Predicates.all.each do |method|
-      define_method(method) do |*args, **config, &block|
-        validator = Predicates::EXECUTOR.send(method, *args, **config, &block)
-        argument = !EXCLUDE_FROM_ARGUMENTS.include?(method)
-        add_validator(validator, argument: argument, type: method)
-      end
     end
 
     def add_validator(validator, argument: true, type: :custom)

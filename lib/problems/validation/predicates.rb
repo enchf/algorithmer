@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'problems/components/action_with_arguments'
 require_relative 'validator'
 
 module Problems
@@ -28,25 +29,57 @@ module Problems
       end
     end
 
-    # Util methods
-    def self.predicate_as_validator(**config, &block)
-      Validator.new(**config, &block)
-    end
+    class << self
+      # Util methods
+      def predicate_as_validator(**config, &block)
+        Validator.new(**config, &block)
+      end
 
-    def self.block_as_validator(**config, &block)
-      Validator.new(**config).evaluate(&block)
-    end
+      def block_as_validator(**config, &block)
+        Validator.new(**config).evaluate(&block)
+      end
 
-    def self.all
-      Predicates.instance_methods(false)
-    end
+      def all
+        Predicates.instance_methods(false)
+      end
 
-    # Integrate to Validator
-    all.each do |method|
-      Validator.define_method(method) do |*args, **new_config, &block|
-        final_config = config.merge(new_config)
-        add_child EXECUTOR.send(method, *args, **final_config, &block)
+      def missing_methods_in(target_class)
+        all.reject { |method| target_class.instance_methods(false).include?(method) }
+      end
+
+      # Integration
+
+      private
+
+      # Integrate to Validator
+      def build_validator_dsl!
+        missing_methods_in(Validator).each do |method|
+          Validator.define_method(method) do |*args, **new_config, &block|
+            final_config = config.merge(new_config)
+            add_child EXECUTOR.send(method, *args, **final_config, &block)
+          end
+        end
+      end
+
+      # Integrate to ActionWithArguments to validate arguments
+      def build_action_dsl!
+        missing_methods_in(ActionWithArguments).each do |method|
+          ActionWithArguments.define_method(method) do |*args, **config, &block|
+            validator = EXECUTOR.send(method, *args, **config, &block)
+            argument = !ActionWithArguments::EXCLUDE_FROM_ARGUMENTS.include?(method)
+            add_validator(validator, argument: argument, type: method)
+          end
+        end
+      end
+
+      public
+
+      def build_dsl!
+        build_validator_dsl!
+        build_action_dsl!
       end
     end
+
+    build_dsl!
   end
 end
