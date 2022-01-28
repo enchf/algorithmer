@@ -7,9 +7,6 @@ module Problems
   # Abstraction that represents a problem management & execution.
   class Problem < Entity
     PROBLEM_NAME = /^[A-Za-z0-9+_-]+$/.freeze
-    QUOTED = /^'[A-Za-z0-9\/\*\.\(\)\[\]\{\}\+ _-]+'$/.freeze
-    WORD_FILTER = /^[A-Za-z0-9\/\*\.\(\)\[\]\{\}\+_-]+$/.freeze
-    TAG = /^#[a-z]+$/.freeze
 
     Predicates.update_dsl! do
       def problem_exists?(**config)
@@ -44,21 +41,7 @@ module Problems
     end
 
     action :list do
-      arguments do
-        any do
-          empty_args
-          all do
-            reserved_word :by
-            varargs do
-              any do
-                format QUOTED
-                format WORD_FILTER
-                format TAG
-              end
-            end
-          end
-        end
-      end
+      empty_args
     end
 
     def add(problem)

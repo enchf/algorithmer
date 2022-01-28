@@ -124,7 +124,7 @@ class ActionWithArgumentsTest < Minitest::Test
     mock_context
     instance = initialize_tested_class do
       all do
-        custom { |val| val.positive? }
+        custom(&:positive?)
         custom { |val| val < 10 }
       end
     end

@@ -6,6 +6,7 @@ require 'problems/entities/invalid'
 require 'problems/entities/version'
 require 'problems/entities/project'
 require 'problems/entities/problem'
+require 'problems/entities/filter'
 
 module Problems
   # Action resolver.
@@ -15,10 +16,6 @@ module Problems
     def self.add(handler)
       handler.actions.each do |action|
         register action, tag: action.name
-
-        # Register invalid action.
-        id = "#{action}_default"
-        register Action.new(Invalid, action.name), tag: action.name, id: id if ActionFactory[id].nil?
       end
     end
 
@@ -29,6 +26,7 @@ module Problems
     add Version
     add Project
     add Problem
+    add Filter
 
     def self.resolve(action, *args)
       action = action&.to_sym
@@ -36,5 +34,15 @@ module Problems
 
       find_by(action) { |handler| handler.accept?(*args) }.execute(*args)
     end
+
+    def self.append_invalids!
+      tags.each do |tag|
+        # Register invalid action.
+        id = "#{tag}_default"
+        register Action.new(Invalid, tag), tag: tag, id: id if ActionFactory[id].nil?
+      end
+    end
+
+    append_invalids!
   end
 end

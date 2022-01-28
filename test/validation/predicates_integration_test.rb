@@ -42,7 +42,7 @@ class PredicatesIntegrationTest < Minitest::Test
   def test_all
     instance = validator_instance do
       all do
-        custom { |val| val.positive? }
+        custom(&:positive?)
         custom { |val| val < 10 }
       end
     end

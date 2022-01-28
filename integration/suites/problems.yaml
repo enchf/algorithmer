@@ -27,7 +27,7 @@ tests:
     expects: 'After confirmation, problem Problem is removed from project'
   - name: 'List all problems'
     action: 'list'
-    expects: 'List all problems using the following filters: '
+    expects: "List all problems using the following filters: ''"
   - name: 'Problem search'
     action: 'list'
     args: ['by "#some" "#tags"', "by 'search-term'", "by '#search' 'combined' with '#tags'"]

@@ -9,9 +9,10 @@ class ReservedWordsTest < Minitest::Test
     words = %i[for goto loop]
     non_words = %i[global variable]
 
-    words.each { |word| Problems::Predicates::EXECUTOR.reserved_word word }
-
-    words.each { |word| assert Problems::ReservedWords.instance.include?(word) }
+    words.each do |word|
+      Problems::Predicates::EXECUTOR.reserved_word word
+      assert Problems::ReservedWords.instance.include?(word)
+    end
     non_words.each { |word| refute Problems::ReservedWords.instance.include?(word) }
   end
 end
