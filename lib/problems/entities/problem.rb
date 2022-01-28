@@ -30,7 +30,10 @@ module Problems
 
     action :add do
       arguments do
-        format PROBLEM_NAME
+        all do
+          non_reserved_word
+          format PROBLEM_NAME
+        end
       end
     end
 
