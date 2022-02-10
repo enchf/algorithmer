@@ -33,3 +33,7 @@ tests:
     args: ['by "#some" "#tags"', "by 'search-term'", "by '#search' 'combined' with '#tags'"]
     expects:
       match: "List all problems using the following filters: '(.+)'$"
+  - name: 'Have all filters'
+    action: 'list'
+    args: 'by some filters and "#tags"'
+    expects: "List all problems using the following filters: 'some,filters,and,#tags'"

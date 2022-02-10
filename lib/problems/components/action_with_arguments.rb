@@ -20,7 +20,8 @@ module Problems
     end
 
     def arguments(*args)
-      context.build(*args)
+      final_args = argument_validators.map { |validator, index| [validator.arguments.call(*args), index] }
+      context.build(*final_args)
     end
 
     def next_index
