@@ -5,74 +5,25 @@ require 'toolcase'
 module Problems
   # Generic validator
   class Validator
-    include Toolcase::Registry
-
-    attr_accessor :predicate, :arguments, :reductor, :entity
-
-    alias children registries
-    alias add_child register
-
-    def initialize(reductor:  Validator.default_reductor,
-                   arguments: Validator.default_arguments,
-                   entity: nil,
-                   &predicate)
-      @predicate = block_given? ? predicate : Validator.default_predicate
-      @arguments = arguments
+    def initialize(reductor, children, &predicate)
       @reductor = reductor
-      @entity = entity
+      @children = children.freeze
+      @predicate = predicate
     end
 
     def valid?(*args)
-      final_args = arguments.call(*args)
-      valid_predicate = predicate.call(*final_args)
-      valid_predicate && (children.empty? || children.send(reductor) do |child|
-        child.valid?(*args)
-      end)
+      final_args = arguments(*args)
+      predicate.call(*final_args) && children_valid?(*args)
     end
 
-    def evaluate(&block)
-      tap { |it| it.instance_eval(&block) }
+    protected
+
+    def arguments(*args)
+      args
     end
 
-    def config
-      { reductor: reductor, arguments: arguments, entity: entity }
-    end
-
-    def self.default_reductor
-      Validator.all
-    end
-
-    def self.default_arguments
-      Validator.all_arguments
-    end
-
-    class << self
-      # Reductors
-      def any
-        :any?
-      end
-
-      def all
-        :all?
-      end
-
-      # Argument providers
-      def all_arguments
-        proc { |*args| args }
-      end
-
-      def indexed_argument(index)
-        proc { |*args| [args[index]] }
-      end
-
-      def tail(start_index)
-        proc { |*args| args.drop(start_index) }
-      end
-
-      # Predicates
-      def default_predicate
-        proc { |*_| true }
-      end
+    def children_valid?(*args)
+      children.empty? || children.send(reductor) { |child| child.valid?(*args) }
     end
   end
 end
