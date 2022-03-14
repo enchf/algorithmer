@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'toolcase'
-require_relative 'action_builder'
+
+require_relative 'arguments'
 
 module Problems
   # Base entity handler.
@@ -9,14 +10,19 @@ module Problems
     extend Toolcase::Registry
 
     class << self
-      alias actions registries
-
-      def action(*action_names, &block)
+      def action(*names, &block)
         action_names.each do |action_name|
-          ActionBuilder.new(self, action_name)
-                       .build(&block)
-                       .tap { |it| register(it, id: action_name) }
+          validator = arguments(&block)
+          register validator, id: action_name
         end
+      end
+
+      def arguments(&block)
+        Arguments.new(&block)
+      end
+
+      def actions
+        identifiers
       end
     end
   end
