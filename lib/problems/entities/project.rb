@@ -12,7 +12,7 @@ module Problems
       format PROJECT_NAME
     end
 
-    def init(name)
+    def init(_, name)
       "A folder called #{name} will be created to store problems"
     end
   end

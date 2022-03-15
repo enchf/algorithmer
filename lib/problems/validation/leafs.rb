@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-require_relative 'reserved_words'
+require 'toolcase'
 
 module Problems
   class Leafs
+    class ReservedWords
+      extend Toolcase::Registry
+    end
+
     class << self
       def reserved_word(word)
-        ReservedWords.publish(word)
+        ReservedWords.register(word)
         proc { |value| value.to_s == word.to_s }
       end
 
