@@ -30,7 +30,7 @@ module Problems
         Leaves.singleton_methods.-([:integrate!]).each do |method|
           target.define_method(method) do |*args|
             predicate = Leaves.send(method, *args)
-            block.call(predicate)
+            instance_exec(predicate, &block)
           end
         end
       end
