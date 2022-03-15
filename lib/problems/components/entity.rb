@@ -18,7 +18,7 @@ module Problems
       end
 
       def arguments(&block)
-        Arguments.new(&block)
+        Arguments.build(&block)
       end
 
       def actions
