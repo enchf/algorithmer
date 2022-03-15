@@ -14,13 +14,13 @@ module Problems
 
     def valid?(*args)
       final_args = @arguments.call(*args)
-      predicate.call(*final_args) && children_valid?(*args)
+      @predicate.call(*final_args) && children_valid?(*args)
     end
 
     protected
 
     def children_valid?(*args)
-      children.empty? || children.send(reductor) { |child| child.valid?(*args) }
+      @children.empty? || @children.send(@reductor) { |child| child.valid?(*args) }
     end
   end
 end

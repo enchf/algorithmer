@@ -1,20 +1,28 @@
 # frozen_string_literal: true
 
+require 'toolcase'
+
+require 'problems/validation/argument_provider'
+require 'problems/validation/leafs'
 require 'problems/validation/validator_builder'
 
 # An special case of a validator to bijectively assign a validator per input argument.
-class Arguments
-  def self.build(&block)
-    ValidatorBuilder.new.tap do |builder|
-      Arguments.new(&block)
-               .registries
-               .each_with_index do |(predicate, argument_provider), index|
-        child = ValidatorBuilder.new
-                                .argument_provider(argument_provider)
-                                .predicate(&predicate)
-                                .build
-        builder.append(child)
-      end
-    end.build
+module Problems
+  class Arguments
+    include Toolcase::Registry
+
+    Leafs.integrate!(Arguments) do |predicate|
+      register ValidatorBuilder.new
+                               .argument_provider(ArgumentProvider.by_index(size))
+                               .predicate(&predicate)
+                               .build
+    end
+
+    def self.build(&block)
+      container = Arguments.new(&block)
+      ValidatorBuilder.new
+                      .append_all(container.registries)
+                      .build
+    end
   end
 end

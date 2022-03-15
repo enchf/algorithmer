@@ -8,10 +8,8 @@ module Problems
     PROJECT_NAME = /^[A-Za-z0-9_-]+$/.freeze
 
     action :init do
-      arguments do
-        reserved_word :project
-        format PROJECT_NAME
-      end
+      reserved_word :project
+      format PROJECT_NAME
     end
 
     def init(name)

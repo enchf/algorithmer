@@ -5,9 +5,7 @@ require 'problems/components/entity'
 module Problems
   # Tool version handler.
   class Version < Entity
-    action :version do
-      empty_args
-    end
+    action :version
 
     def version
       Problems::VERSION

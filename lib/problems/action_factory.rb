@@ -4,6 +4,7 @@ require 'toolcase'
 
 require 'problems/entities/invalid'
 require 'problems/entities/version'
+require 'problems/entities/project'
 
 module Problems
   # Action resolver.
@@ -15,6 +16,7 @@ module Problems
     end
 
     add Version
+    add Project
 
     default Invalid
 
@@ -22,7 +24,7 @@ module Problems
       action = action&.to_sym
       return "Action '#{action}' is not defined" unless tags.include?(action)
 
-      find_by(action) { |handler| handler.accept?(*args) }.new.send(action, *args)
+      find_by(action) { |handler| handler[action].valid?(*args) }.new.send(action, *args)
     end
   end
 end

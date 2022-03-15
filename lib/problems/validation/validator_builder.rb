@@ -33,6 +33,10 @@ module Problems
       tap { @registry.register(validator) }
     end
 
+    def append_all(validators)
+      tap { validators.each { |validator| append(validator) } }
+    end
+
     def argument_provider(provider)
       tap { @arguments = provider }
     end

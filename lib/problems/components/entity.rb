@@ -11,7 +11,7 @@ module Problems
 
     class << self
       def action(*names, &block)
-        action_names.each do |action_name|
+        names.each do |action_name|
           validator = arguments(&block)
           register validator, id: action_name
         end

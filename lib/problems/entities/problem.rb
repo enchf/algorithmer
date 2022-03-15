@@ -26,22 +26,28 @@ module Problems
     end
 
     action :add do
-      arguments do
-        all do
-          non_reserved_word
-          format PROBLEM_NAME
-        end
+      all do
+        non_reserved_word
+        format PROBLEM_NAME
       end
     end
 
     action :run, :show, :remove do
-      arguments do
-        valid_problem?
+      valid_problem?
       end
     end
 
     action :list do
-      empty_args
+      tail do
+        all do
+          non_reserved_word
+          any do
+            format QUOTED
+            format WORD_FILTER
+            format TAG
+          end
+        end
+      end
     end
 
     def add(problem)
