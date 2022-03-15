@@ -21,12 +21,23 @@ module Problems
     def self.build(&block)
       container = Arguments.new(&block)
       ValidatorBuilder.new
+                      .predicate(&container.valid_arity?)
                       .append_all(container.registries)
                       .build
     end
 
     def initialize(&block)
       instance_eval(&block) if block_given?
+    end
+
+    def valid_arity?
+      proc do |*args|
+        arity.include?(args.size)
+      end
+    end
+
+    def arity
+      size..size
     end
   end
 end
