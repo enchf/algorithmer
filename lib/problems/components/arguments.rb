@@ -24,5 +24,9 @@ module Problems
                       .append_all(container.registries)
                       .build
     end
+
+    def initialize(&block)
+      instance_eval(&block) if block_given?
+    end
   end
 end
