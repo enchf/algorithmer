@@ -11,20 +11,29 @@ module Problems
   class Arguments
     include Toolcase::Registry
 
-    Leaves.integrate!(Arguments) do |predicate|
-      register ValidatorBuilder.new
-                               .argument_provider(ArgumentProvider.by_index(size))
-                               .predicate(&predicate)
-                               .build
+    class << self
+      def build(&block)
+        container = Arguments.new(&block)
+        ValidatorBuilder.new
+                        .predicate(&container.valid_arity?)
+                        .append_all(container.registries)
+                        .build
+      end
+
+      def import_predicates!(source, methods)
+        methods.each do |method|
+          Arguments.define_method(method) do |*args|
+            predicate = source.send(method, *args)
+            register ValidatorBuilder.new
+                                .argument_provider(ArgumentProvider.by_index(size))
+                                .predicate(&predicate)
+                                .build
+          end
+        end
+      end
     end
 
-    def self.build(&block)
-      container = Arguments.new(&block)
-      ValidatorBuilder.new
-                      .predicate(&container.valid_arity?)
-                      .append_all(container.registries)
-                      .build
-    end
+    import_predicates!(Leaves, Leaves.exportable_methods)
 
     def initialize(&block)
       instance_eval(&block) if block_given?

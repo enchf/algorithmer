@@ -26,13 +26,8 @@ module Problems
         proc { |value| regex.match?(value.to_s) }
       end
 
-      def integrate!(target, &block)
-        Leaves.singleton_methods.-([:integrate!]).each do |method|
-          target.define_method(method) do |*args|
-            predicate = Leaves.send(method, *args)
-            instance_exec(predicate, &block)
-          end
-        end
+      def exportable_methods
+        Leaves.singleton_methods - [:exportable_methods]
       end
     end
   end

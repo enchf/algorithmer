@@ -8,20 +8,16 @@ module Problems
   class Problem < Entity
     PROBLEM_NAME = /^[A-Za-z0-9+_-]+$/.freeze
 
-    Predicates.update_dsl! do
-      def problem_exists?(**config)
-        Predicates.predicate_as_validator(**config) do |_|
-          # TODO: Validate if problem exists in config
-          true
-        end
-      end
+    def self.problem_exists?
+      # TODO: Validate if problem exists in config
+      proc { true }
+    end
 
-      def valid_problem?(**config)
-        Predicates.block_as_validator(**config) do
-          non_reserved_word
-          format PROBLEM_NAME
-          problem_exists?
-        end
+    def self.valid_problem?
+      Arguments.generate do
+        non_reserved_word
+        format PROBLEM_NAME
+        problem_exists?
       end
     end
 
