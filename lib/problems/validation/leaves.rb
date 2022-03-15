@@ -3,7 +3,7 @@
 require 'toolcase'
 
 module Problems
-  class Leafs
+  class Leaves
     class ReservedWords
       extend Toolcase::Registry
     end
@@ -27,9 +27,9 @@ module Problems
       end
 
       def integrate!(target, &block)
-        Leafs.singleton_methods.-([:integrate!]).each do |method|
+        Leaves.singleton_methods.-([:integrate!]).each do |method|
           target.define_method(method) do |*args|
-            predicate = Leafs.send(method, *args)
+            predicate = Leaves.send(method, *args)
             block.call(predicate)
           end
         end

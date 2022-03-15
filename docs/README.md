@@ -27,7 +27,7 @@ The `default` method is used to register a handler which will be returned if no 
 For example, when an invalid action is being executed.
 
 Moreover, as each entity (projects, problems, properties, etc.) has different actions registered,
-handlers are inspected and the actions classified using the `:tag` option:
+handlers are inspected and the actions classified using the `:tags` option:
 
 ```ruby
 require 'toolcase'
@@ -40,10 +40,8 @@ class ActionFactory
 
   default Invalid
 
-  def self.add(handler)
-    handler.actions.each do |action|
-      register action, tag: action.name
-    end
+  def self.add(entity)
+    register entity, tags: entity.actions
   end
 end
 ```
@@ -55,7 +53,10 @@ If no handler is found, the `Invalid` handler is returned, which prints an error
 
 ```ruby
 def self.resolve(action, *args)
-  find_by(action) { |handler| handler.accept?(*args) }
+  action = action&.to_sym
+  return "Action '#{action}' is not defined" unless tags.include?(action)
+
+  find_by(action) { |handler| handler[action].valid?(*args) }.new.send(action, *args)
 end
 ```
 
@@ -65,93 +66,39 @@ The `bin/problems` executable calls an ActionFactory to determine the handler of
 As mentioned, ActionFactory is built registering the handlers or each of the entities of the gem.
 The entities are all elements present such as the project, problems, problem properties, test cases and solutions.
 
-Each handler inherits from a `Base` class, which allows to register actions.
-
-An action is encapsulated into a class called `Action`, which contains:
-
-* The handler class.
-* An action symbol referencing a method of the Handler class.
-* A set of validations on the arguments of the method.
-* An `accept?` method, returning true if the `*args` passed to the method are valid for the action.
+Each handler inherits from the `Entity` class, which register the configuration of each action.
+Each action is refered to be a validator, which accepts or not the input arguments.
 
 ```ruby
-class Base
-  extend Toolcase::Registry
-
-  def self.action(name, &block)
-    # Action registering code.
-    handler = Action.new(self, name)
-    handler.instance_eval(validations)
-    handler.instance_eval(&block)
-    register handler, id: name, tag: :actions
-  end
-
-  def self.validations
-    # General validations from the handler class.
-  end
-
-  def self.validator(&block)
-    # Add a general validator
-  end
-end
-
 class Version < Base
-  action :version do
-    empty_args
-  end
+  action :version
 
   def version
     Problems::VERSION
   end
 end
-
-class Project < Base
-  validator do
-    project_folder?
-  end
-
-  # more code here ...
-end
 ```
 
-An action can be registered with validators using Toolcase `Registry`.
-And also validators are built using the `Toolcase::Registry` module.
-A validator is a class working as a tree of validators.
-Each validator can have sub-validations, for example, the `arguments` validator:
+Each action is configured within a block, which invokes method.
+Each method refers sequentially to an input argument.
 
 ```ruby
-arguments do
+action :init do
   reserved_word :project
-  name /^[A-Za-z0-9-_]+$/
+  format PROJECT_NAME
 end
 ```
 
-This validator takes the arguments and each of the validators registered on it are applied to each of the arguments in order:
-`reserved_word` for the first argument, `name` for the second, and so on.
+A validator is constructed using a Builder class (validations/validator_builder) which produces a plain validator object.
+The configurable parameters are:
 
-A validator is also extended as a leaf of a tree, with child validators.
+* A reductor, which can be `and` or `or`, through the `all` and `any` methods respectively.
+* The argument provider, which is a lambda that takes the original `*args` input and extracts whats needs to be validated from there.
+* The predicate itself, by default always returns true.
 
 ```ruby
-class Validator
-  def self.name_alias(id)
-    @id ||= id
-  end
-
-  def valid?(*args)
-    # Specific validator code goes here
-  end
-end
-
-class LeafValidator < Validator
-  extend Toolcase::Registry
-
-  # Generic validation operation.
-  def valid?(*args)
-    validators.all? { |validator| validator.valid?(*args) }
-  end
-
-  def validators
-    # Registry of validators.
-  end
-end
+ValidatorBuilder.new
+                .argument_provider(ArgumentProvider.by_index(size))
+                .predicate(&predicate)
+                .build
 ```

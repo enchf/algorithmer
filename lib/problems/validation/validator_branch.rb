@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'leafs'
+require_relative 'leaves'
 require_relative 'validator'
 require_relative 'validator_builder'
 
@@ -8,7 +8,7 @@ module Problems
   # Validator constructor from arguments.
   class ValidatorBranch
     # initializer
-    Leafs.integrate!(ValidatorBranch) do |predicate|
+    Leaves.integrate!(ValidatorBranch) do |predicate|
       @builder.append ValidatorBuilder.new
                                       .argument_provider(@provider)
                                       .predicate(&predicate)
