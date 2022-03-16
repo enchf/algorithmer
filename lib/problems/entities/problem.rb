@@ -13,17 +13,13 @@ module Problems
       proc { true }
     end
 
-    ValidatorBranch.import_predicates!(Problem, :problem_exists?)
+    #ValidatorBranch.import_predicates!(Problem, :problem_exists?)
 
-    def self.valid_problem?
-      ValidatorBranch.as_proc do
-        non_reserved_word
-        format PROBLEM_NAME
-        problem_exists?
-      end
-    end
-
-    ValidatorBranch.import_predicates!(Problem, :valid_problem?)
+    #ValidatorBranch.define_using_dsl!(:valid_problem?) do
+    #  non_reserved_word
+    #  format PROBLEM_NAME
+    #  problem_exists?
+    #end
 
     #action :add do
     #  all do
@@ -32,8 +28,13 @@ module Problems
     #  end
     #end
 
-    action :run, :show, :remove do
-      valid_problem?
+    #action :run do #, :show, :remove do
+    #  byebug
+    #  problem_exists?
+    #end
+
+    action :add do #, :show, :remove do
+      reserved_word :problem
     end
 
     #action :list do

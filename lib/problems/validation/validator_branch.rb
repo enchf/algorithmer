@@ -16,15 +16,11 @@ module Problems
 
     ## -- Predicates as DSL
 
-    def self.import_predicates!(source, *methods)
+    def self.import_predicates!(receiver, *methods)
       methods.each do |method|
         ValidatorBranch.define_method(method) do |*args|
-          predicate = source.send(method, *args)
-          provider = @provider_generator.call
-          register ValidatorBuilder.new
-                              .argument_provider(provider)
-                              .predicate(&predicate)
-                              .build
+          predicate = receiver.send(method, *args)
+          register_validator(&predicate)
         end
       end
     end
@@ -49,7 +45,8 @@ module Problems
     end
 
     def self.for_specific_provider(provider, &block)
-      container = ValidatorBranch.new(proc { provider }, &block)
+      provider_wrapper = proc { provider }
+      container = ValidatorBranch.new(provider_wrapper, &block)
       ValidatorBuilder.new
                       .append_all(container.registries)
                       .build
@@ -76,6 +73,14 @@ module Problems
     def initialize(provider_generator, &block)
       @provider_generator = provider_generator
       instance_eval(&block) if block_given?
+    end
+
+    def register_validator(&predicate)
+      provider = @provider_generator.call
+      register ValidatorBuilder.new
+                               .argument_provider(provider)
+                               .predicate(&predicate)
+                               .build
     end
   end
 end
