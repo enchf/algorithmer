@@ -5,6 +5,7 @@ require 'toolcase'
 require 'problems/entities/invalid'
 require 'problems/entities/version'
 require 'problems/entities/project'
+require 'problems/entities/problem'
 
 module Problems
   # Action resolver.
@@ -17,6 +18,7 @@ module Problems
 
     add Version
     add Project
+    add Problem
 
     default Invalid
 

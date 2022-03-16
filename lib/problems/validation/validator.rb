@@ -17,6 +17,10 @@ module Problems
       @predicate.call(*final_args) && children_valid?(*args)
     end
 
+    def to_predicate
+      proc { |*args| valid?(*args) }
+    end
+
     protected
 
     def children_valid?(*args)

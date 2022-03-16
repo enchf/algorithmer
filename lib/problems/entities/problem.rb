@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'problems/components/entity'
-require 'problems/validation/predicates'
+require 'problems/validation/validator_branch'
 
 module Problems
   # Abstraction that represents a problem management & execution.
@@ -13,38 +13,41 @@ module Problems
       proc { true }
     end
 
+    ValidatorBranch.import_predicates!(Problem, :problem_exists?)
+
     def self.valid_problem?
-      Arguments.generate do
+      ValidatorBranch.as_proc do
         non_reserved_word
         format PROBLEM_NAME
         problem_exists?
       end
     end
 
-    action :add do
-      all do
-        non_reserved_word
-        format PROBLEM_NAME
-      end
-    end
+    ValidatorBranch.import_predicates!(Problem, :valid_problem?)
+
+    #action :add do
+    #  all do
+    #    non_reserved_word
+    #    format PROBLEM_NAME
+    #  end
+    #end
 
     action :run, :show, :remove do
       valid_problem?
-      end
     end
 
-    action :list do
-      tail do
-        all do
-          non_reserved_word
-          any do
-            format QUOTED
-            format WORD_FILTER
-            format TAG
-          end
-        end
-      end
-    end
+    #action :list do
+    #  tail do
+    #    all do
+    #      non_reserved_word
+    #      any do
+    #        format QUOTED
+    #        format WORD_FILTER
+    #        format TAG
+    #      end
+    #    end
+    #  end
+    #end
 
     def add(problem)
       # TODO: Integrate parent entity - #{project.name}"

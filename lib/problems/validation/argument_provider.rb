@@ -23,6 +23,10 @@ module Problems
       def empty
         proc { |*args| [] }
       end
+
+      def single_value
+        proc { |*args| args.first }
+      end
     end
   end
 end

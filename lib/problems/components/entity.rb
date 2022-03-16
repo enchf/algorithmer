@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require 'toolcase'
-
-require_relative 'arguments'
+require 'problems/validation/validator_branch'
 
 module Problems
   # Base entity handler.
@@ -18,7 +17,7 @@ module Problems
       end
 
       def arguments(&block)
-        Arguments.build(&block)
+        ValidatorBranch.for_arguments(&block)
       end
 
       def actions
